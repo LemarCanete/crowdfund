@@ -8,22 +8,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import {Button} from '@/components/ui/button'
-import Link from 'next/link'
 
-const CardItem = [
-    {
-        img: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        link: "/Projects",
-        item: "PROJECTS"
-    },
-    {
-        img: "https://images.pexels.com/photos/3771045/pexels-photo-3771045.jpeg",
-        link: "/About",
-        item: "ABOUT US"
-    },
-]
 
-const Carousel = () => {
+const Header = () => {
     return (
         <div className='w-full'>
             {/* Carousel */}
@@ -59,4 +46,4 @@ const Carousel = () => {
     )
 }
 
-export default Carousel
+export default Header
