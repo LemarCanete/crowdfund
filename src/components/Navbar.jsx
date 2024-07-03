@@ -80,7 +80,7 @@ const Navbar = () => {
                                 <MdWallet className="me-2 text-gray-500"/> Payment
                                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=>router.push('/Settings')}>
                                 <GoGear className="me-2 text-gray-500"/> Settings
                                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                             </DropdownMenuItem>
