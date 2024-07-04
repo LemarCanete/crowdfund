@@ -27,6 +27,8 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import {FaBookmark, FaGoogleWallet, FaHandHoldingHeart, FaLink, FaPlus, FaRegUser, FaUser, FaWallet} from 'react-icons/fa'
 import { GoGear, GoProject  } from "react-icons/go";
 import { MdOutlineLogout, MdWallet } from "react-icons/md";
+import AddAProjectDialog from '@/components/AddAProjectDialog'
+
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
