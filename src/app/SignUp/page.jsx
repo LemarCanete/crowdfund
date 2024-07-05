@@ -25,6 +25,7 @@ const page = () => {
         .then((userCredential) => {
             // Signed up 
             const user = userCredential.user;
+            router.push('/')
         })
         .catch((error) => {
             const errorCode = error.code;

@@ -6,13 +6,15 @@ import { Progress } from "@/components/ui/progress"
 import { Dialog } from "@/components/ui/dialog"
 import AddAProjectDialog from "@/components/AddAProjectDialog"
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "@/utils/firebase-config"
+import { auth, db } from "@/utils/firebase-config"
 
 import { useRouter } from "next/navigation"
+import { onAuthStateChanged } from "firebase/auth"
 
 export default function Projects() {
     const router = useRouter();
     const [projects, setProjects] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(()=>{
         const fetchData = async() =>{
@@ -28,7 +30,16 @@ export default function Projects() {
         fetchData();
     }, [])
 
-    console.log(projects)
+    useEffect(()=>{
+        onAuthStateChanged(auth, (u) => {
+            if (u) {
+              setIsLoggedIn(true)
+            } else {
+              setIsLoggedIn(false)
+            }
+          });
+          
+    }, [])
 
     return (
         <main className="container mx-auto p-4">
@@ -39,7 +50,7 @@ export default function Projects() {
             placeholder="Search Projects"/>
             {/* <Button className="mt-4"> Add Your Project
                 </Button> */}
-            <AddAProjectDialog />
+            {isLoggedIn && <AddAProjectDialog />}
             </header>
             <section className="my-8">
                 <h2 className="text-2xl font-semibold mb-4">Featured Projects</h2>

@@ -47,10 +47,10 @@ const page = ({params}) => {
                     <div className="grid grid-cols-2 gap-4">
                         {/* images */}
                         <div className="m-2 grid grid-cols-3 gap-2">
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-lg col-span-3'/>
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-lg'/>
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-lg'/>
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-lg'/>
+                            <img src={projectDetails.coverPhoto} alt="" className='rounded-t-lg col-span-3'/>
+                            <img src={projectDetails.coverPhoto} alt="" className='rounded-bl-lg '/>
+                            <img src={projectDetails.coverPhoto} alt="" className=''/>
+                            <img src={projectDetails.coverPhoto} alt="" className='rounded-br-lg'/>
                         </div>
 
                         {/* details */}

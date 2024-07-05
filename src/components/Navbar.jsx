@@ -46,7 +46,6 @@ const Navbar = () => {
           });
           
     }, [])
-    console.log(user)
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className="text-2xl">LOGO</Link>
@@ -78,10 +77,10 @@ const Navbar = () => {
                                 <FaRegUser className="me-2 text-gray-500"/> Profile
                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <MdWallet className="me-2 text-gray-500"/> Payment
                                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuItem onClick={()=>router.push('/Settings')}>
                                 <GoGear className="me-2 text-gray-500"/> Settings
                                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
