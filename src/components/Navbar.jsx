@@ -46,7 +46,6 @@ const Navbar = () => {
           });
           
     }, [])
-    console.log(user)
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className="text-2xl">LOGO</Link>
