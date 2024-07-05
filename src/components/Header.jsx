@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardIte } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +14,7 @@ const Header = () => {
     return (
         <div className='w-full'>
             {/* Carousel */}
-            {/* <Carousel className="w-full">
+            <Carousel className="w-full">
                 <CarouselContent className="w-full">
                     {CardItem.map((item, i) => {
                         return(
@@ -39,7 +39,7 @@ const Header = () => {
                 </CarouselContent>
                 <CarouselPrevious />
                 
-            </Carousel> */}
+            </Carousel>
             
             
         </div>

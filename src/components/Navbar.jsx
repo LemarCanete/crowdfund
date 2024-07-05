@@ -27,22 +27,26 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import {FaBookmark, FaGoogleWallet, FaHandHoldingHeart, FaLink, FaPlus, FaRegUser, FaUser, FaWallet} from 'react-icons/fa'
 import { GoGear, GoProject  } from "react-icons/go";
 import { MdOutlineLogout, MdWallet } from "react-icons/md";
+import AddAProjectDialog from '@/components/AddAProjectDialog'
+
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
+    const [user, setUser] = useState();
 
     useEffect(()=>{
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
+        onAuthStateChanged(auth, (u) => {
+            if (u) {
               setIsLoggedIn(true)
+              setUser(u)
             } else {
               setIsLoggedIn(false)
             }
           });
           
     }, [])
-
+    console.log(user)
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className="text-2xl">LOGO</Link>
@@ -59,12 +63,10 @@ const Navbar = () => {
               
 
                 {isLoggedIn && <div className=''>
-                    
-
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='cursor-pointer'>
                             <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                <AvatarImage src={`${user.photoURL ? user.photoURL : 'https://github.com/shadcn.png'}`} alt="@shadcn" />
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
@@ -80,14 +82,16 @@ const Navbar = () => {
                                 <MdWallet className="me-2 text-gray-500"/> Payment
                                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=>router.push('/Settings')}>
                                 <GoGear className="me-2 text-gray-500"/> Settings
                                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem><GoProject className="me-2 text-gray-500"/> My Projects</DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> router.push('/MyProjects')}>
+                                <GoProject className="me-2 text-gray-500" /> My Projects
+                            </DropdownMenuItem>
                             <DropdownMenuSub>
                                 <DropdownMenuSubTrigger><FaBookmark className="me-2 text-gray-500"/> Bookmark</DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
@@ -99,10 +103,10 @@ const Navbar = () => {
                                 </DropdownMenuSubContent>
                                 </DropdownMenuPortal>
                             </DropdownMenuSub>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <FaPlus className="me-2 text-gray-500"/> Add a Project
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem><FaLink className="me-2 text-gray-500"/> Socials</DropdownMenuItem>
