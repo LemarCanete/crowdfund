@@ -1,41 +1,37 @@
-import { Button } from "@/components/ui/button";
+'use client'
+import { useState } from "react";
 
-export default function Donations() {
+export default function UserDonations() {
+    const initialDonations = [
+        { id: 1, campaign: "Typhoon Bopha Relief Fund", amount: 0 },
+        { id: 2, campaign: "Anti-poverty Program", amount: 0 },
+        { id: 3, campaign: "Malnutrition In The Philippines", amount: 0 }
+    ];
+
+    const [donations, setDonations] = useState(initialDonations);
+
+    const totalDonations = donations.reduce((total, donation) => total + donation.amount, 0);
+
     return (
         <main className="container mx-auto p-4">
             <header className="text-center my-8">
-                <h1 className="text-4xl font-bold">CrowdFund Donations</h1>
-                <p className="mt-4 text-lg">Your contribution makes a significant impact. Choose a campaign to support today.</p>
+                <h1 className="text-4xl font-bold">My Donations</h1>
+                <p className="mt-4 text-lg">Review your contributions to various campaigns.</p>
             </header>
             <section className="my-8">
-                <h2 className="text-2xl font-semibold mb-4">Select a Campaign</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="/Project1.jpg" alt="Donation 1" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Education for All</h3>
-                        <p className="mt-2">Typhoon Bopha devastated communities in the Philippines, leaving many without homes and basic necessities. 
-                            Your contribution will provide essential relief and help rebuild lives.</p>
-                        <Button className="mt-4">Donate</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="/Project2.jpg" alt="Donation 2" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Healthcare Access</h3>
-                        <p className="mt-2">Our Anti-poverty Program aims to alleviate poverty by providing education, resources, and support to 
-                            underprivileged communities. Join us in empowering individuals to build a better future.</p>
-                        <Button className="mt-4">Donate</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="/Project3.jpg" alt="Donation 3" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Clean Water Initiative</h3>
-                        <p className="mt-2">Help us combat malnutrition in the Philippines by providing nutritious food and education on healthy eating. 
-                            Your support can save lives and promote healthier communities.</p>
-                        <Button className="mt-4">Donate</Button>
-                    </div>
+                <h2 className="text-2xl font-semibold mb-4">Donations Made</h2>
+                <div className="grid grid-cols-1 gap-4">
+                    {donations.map(donation => (
+                        <div key={donation.id} className="bg-white p-4 rounded shadow-md">
+                            <h3 className="text-xl font-bold">{donation.campaign}</h3>
+                            <p className="mt-2">Amount Donated: {donation.amount > 0 ? `$${donation.amount.toFixed(2)}` : '-'}</p>
+                        </div>
+                    ))}
                 </div>
             </section>
             <section className="text-center my-8">
-                <h2 className="text-2xl font-semibold mb-4">Want to Create Your Own Campaign?</h2>
-                <Button className="px-6 py-2 text-lg">Start Now</Button>
+                <h2 className="text-2xl font-semibold mb-4">Total Donations</h2>
+                <p className="text-lg font-bold">${totalDonations.toFixed(2)}</p>
             </section>
         </main>
     );
