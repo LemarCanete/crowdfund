@@ -37,14 +37,14 @@ function ProfilePage() {
       <div className="border border-gray-300 p-4 rounded-lg mb-6">
         <h2 className="text-2xl font-semibold mb-4">Contributions</h2>
         <ul className="divide-y divide-gray-200">
-          {/* Example contribution item */}
+          {/* CONTRIBUTION */}
           <li className="py-4">
             <p className="text-gray-700">Contribution to Project Typhoon Bopha Relief Fund</p>
             <p className="text-gray-500">Amount: $100</p>
             <p className="text-gray-500">Date: January 1, 2024</p>
           </li>
           
-          {/* Repeat contributions as needed */}
+          {/* CONTRIBUTION */}
           <li className="py-4">
             <p className="text-gray-700">Contribution to Project Anti-poverty Program</p>
             <p className="text-gray-500">Amount: $50</p>
