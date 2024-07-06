@@ -79,6 +79,9 @@ export default function Projects() {
                             <div className="flex flex-row">
                             <p className="basis-1/2">Raised:70,000 php</p>
                             <p className="basis-1/2">Goal:200,000 php</p>
+                            <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -91,6 +94,9 @@ export default function Projects() {
                             <div className="flex flex-row">
                             <p className="basis-1/2">Raised:140,000 php</p>
                             <p className="basis-1/2">Goal:350,000 php</p>
+                            <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -103,6 +109,9 @@ export default function Projects() {
                             <div className="flex flex-row">
                             <p className="basis-1/2">Raised:255,000 php</p>
                             <p className="basis-1/2">Goal:300,000 php</p>
+                            <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -116,8 +125,12 @@ export default function Projects() {
                             <div className="flex flex-row">
                         <p className="basis-1/2">Raised:75,000 php</p>
                         <p className="basis-1/2">Goal:150,000 php</p>
+                        <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                         </div>
                         <Button className="mt-4">More Details</Button>
+
                     </div>
                     <div className="bg-white p-4 rounded shadow-md">
                         <img src="Project5.jpg" alt="Project 5" className="w-full h-48 object-cover rounded mb-4"/>
@@ -128,6 +141,9 @@ export default function Projects() {
                             <div className="flex flex-row">
                         <p className="basis-1/2">Raised:200,000 php</p>
                         <p className="basis-1/2">Goal:250,000 php</p>
+                        <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                         </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -141,6 +157,9 @@ export default function Projects() {
                         <div className="flex flex-row">
                         <p className="basis-1/2">Raised:70,000 php</p>
                         <p className="basis-1/2">Goal:100,000 php</p>
+                        <Button variant="outline" className="gap-1.5">
+                            <BookmarkIcon className="h-4 w-4" />
+                        </Button>
                         </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -151,4 +170,22 @@ export default function Projects() {
             </section>
         </main>
     )
+}
+function BookmarkIcon(props) {
+    return (
+      <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+              <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+    </svg>
+  )
 }
