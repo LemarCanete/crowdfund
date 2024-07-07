@@ -109,7 +109,9 @@ const Navbar = () => {
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem><FaLink className="me-2 text-gray-500"/> Socials</DropdownMenuItem>
-                            <DropdownMenuItem><FaHandHoldingHeart className="me-2 text-gray-500"/> Donations</DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> router.push('/Donations')}>
+                                <FaHandHoldingHeart className="me-2 text-gray-500"/> Donations
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={()=>signOut(auth)}>
                                 <MdOutlineLogout className="me-2 text-gray-500"/> Log out
