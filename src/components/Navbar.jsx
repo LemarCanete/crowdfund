@@ -95,8 +95,8 @@ const Navbar = () => {
                                 <DropdownMenuSubTrigger><FaBookmark className="me-2 text-gray-500"/> Bookmark</DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
-                                    <DropdownMenuItem>Projects</DropdownMenuItem>
-                                    <DropdownMenuItem>Message</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=>router.push('/Bookmark')}>Projects</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=>router.push('/BookmarkMessage')}>Message</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>More...</DropdownMenuItem>
                                 </DropdownMenuSubContent>
