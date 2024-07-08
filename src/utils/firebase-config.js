@@ -2,14 +2,10 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 // import {getFirestore} from 'firebase/firestore'
-// import {getStorage} from 'firebase/storage'
+import {getStorage} from 'firebase/storage'
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
   apiKey: "AIzaSyCkkxrrSDrIFTOT4AfgFRmynRLgrjZKoIE",
@@ -26,9 +22,5 @@ const app = initializeApp(firebaseConfig);
 // export const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-
-
-
-// export const storage = getStorage()
-// export const firestore = getFirestore(app)
-// auth.languageCode = 'it';
+export const db = getFirestore(app)
+export const storage = getStorage()

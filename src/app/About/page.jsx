@@ -2,11 +2,11 @@ import React from 'react';
 
 const AboutPage = () => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6' }}>
             <div style={{ display: 'flex', width: '80%', maxWidth: '1200px' }}>
                 <div style={{ flex: '1', paddingRight: '20px' }}>
                     <img
-                        src="/AboutPage.jpg"
+                        src="/ContactUs.png"
                         alt="About Us"
                         style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
                     />
@@ -42,6 +42,6 @@ const AboutPage = () => {
             </div>
         </div>
     );
-};
+}
 
 export default AboutPage;

@@ -1,8 +1,9 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { auth } from '@/utils/firebase-config'
 import {
     Avatar,
@@ -27,86 +28,81 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import {FaBookmark, FaGoogleWallet, FaHandHoldingHeart, FaLink, FaPlus, FaRegUser, FaUser, FaWallet} from 'react-icons/fa'
 import { GoGear, GoProject  } from "react-icons/go";
 import { MdOutlineLogout, MdWallet } from "react-icons/md";
+import AddAProjectDialog from '@/components/AddAProjectDialog'
+import { AuthContext } from '@/context/AuthContext'
 
 const Navbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
-
-    useEffect(()=>{
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-              setIsLoggedIn(true)
-            } else {
-              setIsLoggedIn(false)
-            }
-          });
-          
-    }, [])
+    const pathname = usePathname();
+    const {currentUser} = useContext(AuthContext)
+    console.log(currentUser)
 
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className="text-2xl">LOGO</Link>
 
             <div className="flex gap-10 items-center">
-                <Link className="" href='/'>Home</Link>
-                <Link className="" href='/Projects'>Projects</Link>
-                <Link className="" href='/Contact'>Contact Us</Link>
-                <Link className="" href='/About'>About</Link>
-                {!isLoggedIn && <div className="gap-2 flex">
+            <Link className={pathname === '/' ? 'text-blue-500' : ''} href='/'>Home</Link>
+            <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
+            <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
+            <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
+                {!currentUser.uid && <div className="gap-2 flex">
                     <Button variant="link" onClick={()=> router.push('/Login')}>Login</Button>
                     <Button variant="" onClick={()=> router.push('/SignUp')}>Sign up</Button>
                 </div>}
               
 
-                {isLoggedIn && <div className=''>
-                    
-
+                {currentUser.uid && <div className=''>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='cursor-pointer'>
                             <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                <AvatarFallback>CN</AvatarFallback>
+                                <AvatarImage src={`${currentUser.photoURL && currentUser.photoURL}`} alt="@shadcn" />
+                                <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=>router.push('/Profile')}>
                                 <FaRegUser className="me-2 text-gray-500"/> Profile
                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <MdWallet className="me-2 text-gray-500"/> Payment
                                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            </DropdownMenuItem> */}
+                            <DropdownMenuItem onClick={()=>router.push('/Settings')}>
                                 <GoGear className="me-2 text-gray-500"/> Settings
                                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem><GoProject className="me-2 text-gray-500"/> My Projects</DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> router.push('/MyProjects')}>
+                                <GoProject className="me-2 text-gray-500" /> My Projects
+                            </DropdownMenuItem>
                             <DropdownMenuSub>
                                 <DropdownMenuSubTrigger><FaBookmark className="me-2 text-gray-500"/> Bookmark</DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
-                                    <DropdownMenuItem>Projects</DropdownMenuItem>
-                                    <DropdownMenuItem>Message</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=>router.push('/Bookmark')}>Projects</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=>router.push('/BookmarkMessage')}>Message</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>More...</DropdownMenuItem>
                                 </DropdownMenuSubContent>
                                 </DropdownMenuPortal>
                             </DropdownMenuSub>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <FaPlus className="me-2 text-gray-500"/> Add a Project
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem><FaLink className="me-2 text-gray-500"/> Socials</DropdownMenuItem>
-                            <DropdownMenuItem><FaHandHoldingHeart className="me-2 text-gray-500"/> Donations</DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> router.push('/Donations')}>
+                                <FaHandHoldingHeart className="me-2 text-gray-500"/> Donations
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={()=>signOut(auth)}>
                                 <MdOutlineLogout className="me-2 text-gray-500"/> Log out
