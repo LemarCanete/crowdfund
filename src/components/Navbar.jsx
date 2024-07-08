@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -29,25 +29,14 @@ import {FaBookmark, FaGoogleWallet, FaHandHoldingHeart, FaLink, FaPlus, FaRegUse
 import { GoGear, GoProject  } from "react-icons/go";
 import { MdOutlineLogout, MdWallet } from "react-icons/md";
 import AddAProjectDialog from '@/components/AddAProjectDialog'
-
+import { AuthContext } from '@/context/AuthContext'
 
 const Navbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
-    const [user, setUser] = useState();
+    const {currentUser} = useContext(AuthContext)
+    console.log(currentUser)
 
-    useEffect(()=>{
-        onAuthStateChanged(auth, (u) => {
-            if (u) {
-              setIsLoggedIn(true)
-              setUser(u)
-            } else {
-              setIsLoggedIn(false)
-            }
-          });
-          
-    }, [])
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className="text-2xl">LOGO</Link>
@@ -57,18 +46,18 @@ const Navbar = () => {
             <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
             <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
             <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
-                {!isLoggedIn && <div className="gap-2 flex">
+                {!currentUser.uid && <div className="gap-2 flex">
                     <Button variant="link" onClick={()=> router.push('/Login')}>Login</Button>
                     <Button variant="" onClick={()=> router.push('/SignUp')}>Sign up</Button>
                 </div>}
               
 
-                {isLoggedIn && <div className=''>
+                {currentUser.uid && <div className=''>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='cursor-pointer'>
                             <Avatar>
-                                <AvatarImage src={`${user.photoURL ? user.photoURL : 'https://github.com/shadcn.png'}`} alt="@shadcn" />
-                                <AvatarFallback>CN</AvatarFallback>
+                                <AvatarImage src={`${currentUser.photoURL && currentUser.photoURL}`} alt="@shadcn" />
+                                <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56">

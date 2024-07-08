@@ -1,5 +1,5 @@
 'use client'
-import {React, useState, useEffect} from "react"
+import {React, useState, useEffect, useContext} from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -7,6 +7,7 @@ import { Dialog } from "@/components/ui/dialog"
 import AddAProjectDialog from "@/components/AddAProjectDialog"
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/utils/firebase-config"
+import { AuthContext } from '@/context/AuthContext'
 
 import { useRouter } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
@@ -14,7 +15,7 @@ import { onAuthStateChanged } from "firebase/auth"
 export default function Projects() {
     const router = useRouter();
     const [projects, setProjects] = useState([]);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const {currentUser} = useContext(AuthContext)
 
     useEffect(()=>{
         const fetchData = async() =>{
@@ -30,16 +31,6 @@ export default function Projects() {
         fetchData();
     }, [])
 
-    useEffect(()=>{
-        onAuthStateChanged(auth, (u) => {
-            if (u) {
-              setIsLoggedIn(true)
-            } else {
-              setIsLoggedIn(false)
-            }
-          });
-          
-    }, [])
 
     return (
         <main className="container mx-auto p-4">
@@ -50,7 +41,7 @@ export default function Projects() {
             placeholder="Search Projects"/>
             {/* <Button className="mt-4"> Add Your Project
                 </Button> */}
-            {isLoggedIn && <AddAProjectDialog />}
+            {currentUser.uid && <AddAProjectDialog />}
             </header>
             <section className="my-8">
                 <h2 className="text-2xl font-semibold mb-4">Featured Projects</h2>
