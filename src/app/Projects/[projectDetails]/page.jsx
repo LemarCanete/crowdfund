@@ -1,6 +1,6 @@
 'use client'
 import React, {useEffect, useState} from 'react'
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from '@/utils/firebase-config';
 import {
     Card,
@@ -22,7 +22,72 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {useRouter} from 'next/navigation'
 import { CiBookmark, CiFlag1, CiHeart, CiShare2 } from "react-icons/ci";
+import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
+import { Textarea } from '@/components/ui/textarea';
+import { List, ListItem } from '@/components/ui/list';
+    
+//Review content
+const ReviewForm = ({ projectId }) => {
+    const [reviews, setReviews] = useState([]);
+    const [review, setReview] = useState('');
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            const querySnapshot = await getDocs(collection(db, 'reviews'));
+            const reviewsList = querySnapshot.docs.map(doc => doc.data().review);
+            setReviews(reviewsList);
+        };
+        fetchReviews();
+    }, []);
+
+    const handleInputChange = (event) => {
+        setReview(event.target.value);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (review.trim()) {
+            try {
+                await addDoc(collection(db, 'reviews'), {
+                    projectId,
+                    review,
+                    createdAt: new Date(),
+                });
+                setReviews([...reviews, review]);
+                setReview('');
+            } catch (error) {
+                console.error('Error adding review: ', error);
+            }
+        }
+    };
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit} className="mb-4">
+                <Label htmlFor="review" className="mb-2 block">Add a review:</Label>
+                <Textarea
+                    id="review"
+                    value={review}
+                    onChange={handleInputChange}
+                    placeholder="Write your review here..."
+                    className="min-w-full"
+                />
+                <Button  className= "mt-6" type="submit">Submit Review</Button>
+            </form>
+            <div>
+                <h2 className="text-xl font-bold mb-2">Reviews:</h2>
+                <List>
+                    {reviews.map((rev, index) => (
+                        <ListItem key={index} className="mb-2 p-2 border-b">
+                            {rev}
+                        </ListItem>
+                    ))}
+                </List>
+            </div>
+        </div>
+    );
+};
 
 const page = ({params}) => {
     const id = params.projectDetails;
@@ -120,7 +185,7 @@ const page = ({params}) => {
                     </TabsContent>
                     <TabsContent value="updates">Updates</TabsContent>
                     <TabsContent value="backerList">Backer list</TabsContent>
-                    <TabsContent value="reviews">Add a review</TabsContent>
+                    <TabsContent value="reviews"> <ReviewForm projectId={id} /> </TabsContent>
                 </Tabs>
                 <div className="col-span-2">
                     <h3 className="font-bold tracking-wider">Support other projects</h3>
