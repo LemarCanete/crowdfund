@@ -16,15 +16,28 @@ import { FcGoogle } from "react-icons/fc";
 import {createUserWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
 import {auth, provider} from '@/utils/firebase-config'
 import { useRouter } from 'next/navigation'
+import { addDoc, doc, setDoc } from "firebase/firestore"; 
 
 const page = () => {
     const [userType, setUserType] = useState('');
     const router = useRouter()
     const addUserAuth = (email, password)=>{
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async(userCredential) => {
             // Signed up 
             const user = userCredential.user;
+            console.log(user.uid)
+            const docRef = await addDoc(collection(db, "users"), {
+                uid: user.uid,
+                displayName: user.displayName,
+                email: user.email,
+                isVerified: false,
+                phoneNumber: user.phoneNumber,
+                photoURL: user.photoURL,
+                bio: '',
+                username: '',
+                location: ''
+              });
             router.push('/')
         })
         .catch((error) => {
@@ -34,12 +47,23 @@ const page = () => {
     }
 
     const signUpGoogle = () =>{
-        console.log('unsa na ni')
         signInWithPopup(auth, provider)
-        .then((result) => {
-            router.push('/')
+        .then(async(result) => {
+            const docRef = await addDoc(collection(db, "users"), {
+                uid: result.user.uid,
+                displayName: result.user.displayName,
+                email: result.user.email,
+                isVerified: false,
+                phoneNumber: result.user.phoneNumber,
+                photoURL: result.user.photoURL,
+                bio: '',
+                username: '',
+                location: ''
+              });
+                console.log("Document written with ID: ", docRef.id);
+                router.push('/')
           }).catch((error) => {
-            console.log(error.message)
+                console.log(error.message)
           });
     }
 

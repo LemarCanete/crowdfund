@@ -1,6 +1,6 @@
 'use client'
 import React, {useEffect, useState} from 'react'
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from '@/utils/firebase-config';
 import {
     Card,
@@ -31,14 +31,29 @@ const page = ({params}) => {
 
     useEffect(()=>{
         const fetchData = async() =>{
+
+            // get Project details
             const docRef = doc(db, "projects", id);
             const docSnap = await getDoc(docRef);
 
-            setProjectDetails(docSnap.data());
+            // get project author details
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, where("uid", "==", docSnap.data().author));
+
+            const querySnapshot = await getDocs(q);
+            let author;
+            querySnapshot.forEach((doc) => {
+                author = doc.data()
+            });
+
+            setProjectDetails({...docSnap.data(), user: author});
         }
 
         fetchData()
     }, [])
+
+    console.log(projectDetails)
+
 
     return (
         <div className=''>
@@ -59,7 +74,7 @@ const page = ({params}) => {
                             <div className="grid grid-cols-2">
                                 <div className="flex gap-4">
                                     <Avatar>
-                                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                        <AvatarImage src={projectDetails.user?.photoURL} alt="@shadcn" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <div className="">
@@ -76,7 +91,7 @@ const page = ({params}) => {
                             </div>
 
                             {/* details */}
-                            <div className="grid grid-rows-5">
+                            <div className="">
                                 <h1 className="text-2xl font-extrabold tracking-wide">{projectDetails.title}</h1>
                                 <Badge variant="" className='w-fit h-fit'>{projectDetails.category}</Badge>
                                 <p className="text-gray-500 ">{projectDetails.description}</p>
