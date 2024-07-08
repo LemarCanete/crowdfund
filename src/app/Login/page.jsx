@@ -16,7 +16,8 @@ import { FcGoogle } from "react-icons/fc";
 
 // auth
 import {sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '@/utils/firebase-config'
+import { auth, db, provider } from '@/utils/firebase-config'
+import { addDoc, collection, setDoc } from 'firebase/firestore'
 
 const page = () => {
     const router = useRouter('/')
@@ -48,10 +49,21 @@ const page = () => {
     const signInGoogle = () =>{
         console.log('unsa na ni')
         signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async(result) => {
+            const docRef = await addDoc(collection(db, "users"), {
+                uid: result.user.uid,
+                displayName: result.user.displayName,
+                email: result.user.email,
+                isVerified: false,
+                phoneNumber: result.user.phoneNumber,
+                photoURL: result.user.photoURL,
+                bio: '',
+                username: '',
+                location: ''
+              });
             router.push('/')
           }).catch((error) => {
-            console.log(error.message)
+                console.log(error.message)
           });
     }
 
