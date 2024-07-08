@@ -39,6 +39,18 @@ const page = () => {
                         <Label htmlFor="username">Username</Label>
                         <Input id="username" defaultValue="@peduarte" />
                         </div>
+                        <div className="space-y-1">
+                        <Label htmlFor="email address">Email Address</Label>
+                        <Input id="email address" defaultValue="pedroduarte@gmail.com" />
+                        </div>
+                        <div className="space-y-1">
+                        <Label htmlFor="location">Location</Label>
+                        <Input id="location" defaultValue="Shibuya"/>
+                        </div>
+                        <div className="space-y-1">
+                        <Label htmlFor="contact no.">Contact No.</Label>
+                        <Input id="contact no." defaultValue="09345353431"/>
+                        </div>
                     </CardContent>
                     <CardFooter>
                         <Button>Save changes</Button>

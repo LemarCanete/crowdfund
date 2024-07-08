@@ -39,7 +39,7 @@ const Navbar = () => {
 
     return (
         <nav className='flex justify-between p-5'>
-            <Link href="/" className="text-2xl">LOGO</Link>
+            <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={100} /></Link>
 
             <div className="flex gap-10 items-center">
             <Link className={pathname === '/' ? 'text-blue-500' : ''} href='/'>Home</Link>
