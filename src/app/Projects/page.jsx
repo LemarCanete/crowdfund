@@ -77,8 +77,8 @@ export default function Projects() {
                             Your contribution will provide essential relief and help rebuild lives.</p>
                             <Progress value={35} className="w-[85%] mt-4" />
                             <div className="flex flex-row">
-                            <p className="basis-1/2">Raised:70,000 php</p>
-                            <p className="basis-1/2">Goal:200,000 php</p>
+                            <p className="mt-4">Raised:70,000 php</p>
+                            <p className="mt-4 ml-auto">Goal:200,000 php</p>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -89,8 +89,8 @@ export default function Projects() {
                             underprivileged communities. Join us in empowering individuals to build a better future.</p>
                             <Progress value={40} className="w-[85%] mt-4" />
                             <div className="flex flex-row">
-                            <p className="basis-1/2">Raised:140,000 php</p>
-                            <p className="basis-1/2">Goal:350,000 php</p>
+                            <p className="mt-4">Raised:140,000 php</p>
+                            <p className="mt-4 ml-auto">Goal:350,000 php</p>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -101,8 +101,8 @@ export default function Projects() {
                             Your support can save lives and promote healthier communities.</p>
                             <Progress value={85} className="w-[85%] mt-4" />
                             <div className="flex flex-row">
-                            <p className="basis-1/2">Raised:255,000 php</p>
-                            <p className="basis-1/2">Goal:300,000 php</p>
+                            <p className="mt-4">Raised:255,000 php</p>
+                            <p className="mt-4 ml-auto">Goal:300,000 php</p>
                             </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -114,8 +114,8 @@ export default function Projects() {
                             </p>
                             <Progress value={50} className="w-[85%] mt-4" />
                             <div className="flex flex-row">
-                        <p className="basis-1/2">Raised:75,000 php</p>
-                        <p className="basis-1/2">Goal:150,000 php</p>
+                        <p className="mt-4">Raised:75,000 php</p>
+                        <p className="mt-4 ml-auto">Goal:150,000 php</p>
                         </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -126,8 +126,8 @@ export default function Projects() {
                             Funds will be used for tuition, school supplies, and transportation.</p>
                             <Progress value={80} className="w-[85%] mt-4" />
                             <div className="flex flex-row">
-                        <p className="basis-1/2">Raised:200,000 php</p>
-                        <p className="basis-1/2">Goal:250,000 php</p>
+                        <p className="mt-4">Raised:200,000 php</p>
+                        <p className="mt-4 ml-auto">Goal:250,000 php</p>
                         </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
@@ -139,8 +139,8 @@ export default function Projects() {
                         </p>
                         <Progress value={70} className="w-[85%] mt-4" />
                         <div className="flex flex-row">
-                        <p className="basis-1/2">Raised:70,000 php</p>
-                        <p className="basis-1/2">Goal:100,000 php</p>
+                        <p className="mt-4">Raised:70,000 php</p>
+                        <p className="mt-4 ml-auto">Goal:100,000 php</p>
                         </div>
                         <Button className="mt-4">More Details</Button>
                     </div>
