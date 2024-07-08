@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {Formik} from 'formik'
+import { useRouter } from 'next/navigation'
 
 // components
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import Link from 'next/link'
 
@@ -13,40 +15,39 @@ import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 
 // auth
-import {createUserWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
-import {auth, provider} from '@/utils/firebase-config'
-import { useRouter } from 'next/navigation'
-import { addDoc, doc, setDoc } from "firebase/firestore"; 
+import {sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
+import { auth, db, provider } from '@/utils/firebase-config'
+import { addDoc, collection, setDoc } from 'firebase/firestore'
 
 const page = () => {
-    const [userType, setUserType] = useState('');
-    const router = useRouter()
-    const addUserAuth = (email, password)=>{
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(async(userCredential) => {
-            // Signed up 
+    const router = useRouter('/')
+
+    const signIn = (email, password) =>{
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in 
             const user = userCredential.user;
-            console.log(user.uid)
-            const docRef = await addDoc(collection(db, "users"), {
-                uid: user.uid,
-                displayName: user.displayName,
-                email: user.email,
-                isVerified: false,
-                phoneNumber: user.phoneNumber,
-                photoURL: user.photoURL,
-                bio: '',
-                username: '',
-                location: ''
-              });
+            console.log('signed in', user)
             router.push('/')
+            return true
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            return false
         });
     }
 
-    const signUpGoogle = () =>{
+    const resetEmail = (email) =>{
+        try{
+            sendPasswordResetEmail(auth, email)
+        }catch(err){
+            console.log(err.message)
+        }
+    }
+
+    const signInGoogle = () =>{
+        console.log('unsa na ni')
         signInWithPopup(auth, provider)
         .then(async(result) => {
             const docRef = await addDoc(collection(db, "users"), {
@@ -60,8 +61,7 @@ const page = () => {
                 username: '',
                 location: ''
               });
-                console.log("Document written with ID: ", docRef.id);
-                router.push('/')
+            router.push('/')
           }).catch((error) => {
                 console.log(error.message)
           });
@@ -69,21 +69,21 @@ const page = () => {
 
     return (
         <div className='w-full'>
-            <Formik initialValues={{ email: '', password: '', confirmPassword: '' }}
+            <Formik initialValues={{ email: '', password: ''}}
                 validate={values => {
                     const errors = {};
                     if (!values.email) {
                         errors.email = 'Required';
-                    } else if ( !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-                        errors.email = 'Invalid email address';
-                    }else if(values.confirmPassword !== values.password){
-                        errors.confirmPassword = 'Password not matched!';
+                    } else if (
+                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    ) {
+                    errors.email = 'Invalid email address';
                     }
                     return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    addUserAuth(values.email, values.password)
-                    setSubmitting(true)
+                    const signedIn = signIn(values.email, values.password)
+                    signedIn && setSubmitting(false)
                 }}
                 >
                 {({
@@ -97,7 +97,7 @@ const page = () => {
                     /* and other goodies */
                 }) => (
                     <form onSubmit={handleSubmit} className='w-2/6 mx-auto mt-16'>
-                        <h1 className="text-2xl font-bold">Sign up</h1>
+                        <h1 className="text-2xl font-bold">Login</h1>
                         <div className="my-6">
                             <Label htmlFor="email" className=''>Email</Label>
                             <Input
@@ -110,7 +110,7 @@ const page = () => {
                                 value={values.email}
                                 className='my-2'
                             />
-                            {errors.email && touched.email && <div className='text-red-500 text-sm'>{errors.email}</div>}
+                            {errors.email && touched.email && <div className='text-sm text-red-500'>{errors.email   }</div>}
                         </div>
                         <div className="mb-6">
                             <Label htmlFor="password" className=''>Password</Label>
@@ -123,32 +123,34 @@ const page = () => {
                                 id='password'
                                 className='my-2'
                             />
-                            {errors.password && touched.password && <div className='text-red-500 text-sm'>{errors.password}</div>}
+                            {errors.password && touched.password && <div className='text-sm text-red-500'>{errors.password}</div>}
                         </div>
 
-                        <div className="mb-6">
-                            <Label htmlFor="confirmPassword" className=''>Confirm Password</Label>
-                            <Input
-                                type="password"
-                                name="confirmPassword"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.confirmPassword}
-                                id='confirmPassword'
-                                className='my-2'
-                            />
-                            {errors.confirmPassword && touched.confirmPassword && <div className='text-red-500 text-sm'>{errors.confirmPassword}</div>}
+                        <div className="flex justify-between align-center">
+                            <div className="flex items-center space-x-2">
+                                <Checkbox id="remember-me" />
+                                <label
+                                    htmlFor="remember-me"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Remember me?
+                                </label>
+                            </div>
+                            <div className="">
+                                <Button variant="link" type="button" onClick={()=> resetEmail(values.email)}>Forgot password?</Button>
+                            </div>
                         </div>
 
                         <Button type="submit" disabled={isSubmitting} className='w-full mt-6'>
-                            Sign up
+                            Login
                         </Button>
 
                         <Separator className='mt-6'/>
 
-                        <Button className='w-full mt-4' variant="outline" onClick={signUpGoogle}>
-                            <FcGoogle className='text-lg me-2'/>Sign up with Google
+                        <Button className='w-full mt-4' onClick={signInGoogle} variant="outline" type='button'>
+                            <FcGoogle className='text-lg me-2' />Sign in with Google
                         </Button>
+                        <p className="text-center mt-4">Dont have account? <Link href="SignUp" className='underline'>SignUp</Link></p>
                     </form>
                 )}
             </Formik>
