@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { auth } from '@/utils/firebase-config'
 import {
     Avatar,
@@ -33,6 +34,7 @@ import AddAProjectDialog from '@/components/AddAProjectDialog'
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
     const [user, setUser] = useState();
 
     useEffect(()=>{
@@ -51,10 +53,10 @@ const Navbar = () => {
             <Link href="/" className="text-2xl">LOGO</Link>
 
             <div className="flex gap-10 items-center">
-                <Link className="" href='/'>Home</Link>
-                <Link className="" href='/Projects'>Projects</Link>
-                <Link className="" href='/Contact'>Contact Us</Link>
-                <Link className="" href='/About'>About</Link>
+            <Link className={pathname === '/' ? 'text-blue-500' : ''} href='/'>Home</Link>
+            <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
+            <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
+            <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
                 {!isLoggedIn && <div className="gap-2 flex">
                     <Button variant="link" onClick={()=> router.push('/Login')}>Login</Button>
                     <Button variant="" onClick={()=> router.push('/SignUp')}>Sign up</Button>
@@ -73,7 +75,7 @@ const Navbar = () => {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=>router.push('/Profile')}>
                                 <FaRegUser className="me-2 text-gray-500"/> Profile
                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                             </DropdownMenuItem>
