@@ -14,13 +14,14 @@ import { FcGoogle } from "react-icons/fc";
 
 // auth
 import {createUserWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
-import {auth, provider} from '@/utils/firebase-config'
+import {auth, db, provider} from '@/utils/firebase-config'
 import { useRouter } from 'next/navigation'
-import { addDoc, doc, setDoc } from "firebase/firestore"; 
+import { addDoc, collection, doc, setDoc } from "firebase/firestore"; 
 
 const page = () => {
     const [userType, setUserType] = useState('');
     const router = useRouter()
+
     const addUserAuth = (email, password)=>{
         createUserWithEmailAndPassword(auth, email, password)
         .then(async(userCredential) => {
@@ -43,6 +44,7 @@ const page = () => {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(errorMessage)
         });
     }
 
