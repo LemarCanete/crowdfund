@@ -2,6 +2,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import { doc, getDoc, collection, addDoc, getDocs, where, query } from "firebase/firestore";
 import { db } from '@/utils/firebase-config';
+import { formatDistanceToNow } from 'date-fns';
 import {
     Card,
     CardContent,
@@ -36,6 +37,8 @@ const ReviewForm = ({ projectId }) => {
     const [reviews, setReviews] = useState([]);
     const [review, setReview] = useState('');
     
+   
+    
     useEffect(() => {
         const fetchReviews = async () => {
             const q = query(collection(db, 'reviews'), where('projectId', '==', projectId));
@@ -43,15 +46,20 @@ const ReviewForm = ({ projectId }) => {
             
             const reviewsList = querySnapshot.docs.map(doc => doc.data());
             setReviews(reviewsList);
+            //make the reviewlist to descending order
+            reviewsList.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+            setReviews(reviewsList);
         };
         fetchReviews();
     }, [projectId]);
 
     const handleInputChange = (event) => {
         setReview(event.target.value);
+       
     };
-
+    
     const handleSubmit = async (event) => {
+        
         event.preventDefault();
         if (review.trim()) {
             try {
@@ -64,11 +72,14 @@ const ReviewForm = ({ projectId }) => {
                         email: currentUser ? currentUser.email : "Anonymous",
                         photoURL: currentUser.photoURL 
                     }
+                    
                 });
-                setReviews([...reviews, { review, user: { name: currentUser.displayName, photoURL: currentUser.photoURL } }]);
+                setReviews([...reviews, { review, user: { name: currentUser.displayName, photoURL: currentUser.photoURL }, createdAt: new Date() }]);
                 setReview('');
+
+                window.location.reload();
             } catch (error) {
-                console.error('Error adding review: ', error);
+               
                 alert("Please login to add a review.");
             }
         }
@@ -99,6 +110,12 @@ const ReviewForm = ({ projectId }) => {
                         <div>
                             <p className="font-bold">{rev.user ? rev.user.name : 'Anonymous'}</p> 
                             <p>{rev.review}</p>
+                             
+                             <p className="text-gray-500 text-xs">
+                                    {rev.createdAt instanceof Date ?
+                                        formatDistanceToNow(rev.createdAt, { addSuffix: true }) :
+                                        formatDistanceToNow(rev.createdAt.toDate(), { addSuffix: true })}
+                                </p>
                         </div> 
                     </ListItem>
     ))}                          
@@ -123,7 +140,7 @@ const page = ({params}) => {
             setProjectDetails(docSnap.data());
         }
 
-        fetchData()
+        fetchData();        
     }, [id]);
 
     return (
