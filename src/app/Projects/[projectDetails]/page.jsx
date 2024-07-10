@@ -30,7 +30,7 @@ import { AuthContext } from '@/context/AuthContext';
 
 
 
-//Review content
+//Review functions
 const ReviewForm = ({ projectId }) => {
     const { currentUser } = useContext(AuthContext); 
     const [reviews, setReviews] = useState([]);
