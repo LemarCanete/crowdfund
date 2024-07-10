@@ -1,6 +1,6 @@
 'use client'
-import React, {useEffect, useState} from 'react'
-import { doc, getDoc, collection, addDoc, getDocs } from "firebase/firestore";
+import React, {useEffect, useState, useContext} from 'react'
+import { doc, getDoc, collection, addDoc, getDocs, where, query } from "firebase/firestore";
 import { db } from '@/utils/firebase-config';
 import {
     Card,
@@ -26,20 +26,26 @@ import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
 import { Textarea } from '@/components/ui/textarea';
 import { List, ListItem } from '@/components/ui/list';
-    
+import { AuthContext } from '@/context/AuthContext';
+
+
+
 //Review content
 const ReviewForm = ({ projectId }) => {
+    const { currentUser } = useContext(AuthContext); 
     const [reviews, setReviews] = useState([]);
     const [review, setReview] = useState('');
-
+    
     useEffect(() => {
         const fetchReviews = async () => {
-            const querySnapshot = await getDocs(collection(db, 'reviews'));
-            const reviewsList = querySnapshot.docs.map(doc => doc.data().review);
+            const q = query(collection(db, 'reviews'), where('projectId', '==', projectId));
+            const querySnapshot = await getDocs(q);
+            
+            const reviewsList = querySnapshot.docs.map(doc => doc.data());
             setReviews(reviewsList);
         };
         fetchReviews();
-    }, []);
+    }, [projectId]);
 
     const handleInputChange = (event) => {
         setReview(event.target.value);
@@ -53,8 +59,13 @@ const ReviewForm = ({ projectId }) => {
                     projectId,
                     review,
                     createdAt: new Date(),
+                    user: {
+                        name: currentUser ? currentUser.displayName : 'Anonymous',
+                        email: currentUser ? currentUser.email : "Anonymous",
+                        photoURL: currentUser.photoURL 
+                    }
                 });
-                setReviews([...reviews, review]);
+                setReviews([...reviews, { review, user: { name: currentUser.displayName, photoURL: currentUser.photoURL } }]);
                 setReview('');
             } catch (error) {
                 console.error('Error adding review: ', error);
@@ -78,11 +89,18 @@ const ReviewForm = ({ projectId }) => {
             <div>
                 <h2 className="text-xl font-bold mb-2">Reviews:</h2>
                 <List>
-                    {reviews.map((rev, index) => (
-                        <ListItem key={index} className="mb-2 p-2 border-b">
-                            {rev}
-                        </ListItem>
-                    ))}
+                {reviews.map((rev, index) => (
+                     <ListItem key={index} className="mb-2 p-2 border-b flex items-center">
+                         <Avatar className="mr-4">
+                         <AvatarImage src={rev.user.photoURL} alt={rev.user.name} />
+                        <AvatarFallback>{rev.user ? rev.user.name[0] : 'A'}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="font-bold">{rev.user ? rev.user.name : 'Anonymous'}</p> 
+                            <p>{rev.review}</p>
+                        </div> 
+                    </ListItem>
+    ))}                          
                 </List>
             </div>
         </div>
@@ -94,6 +112,8 @@ const page = ({params}) => {
     const [projectDetails, setProjectDetails] = useState({})
     const router = useRouter();
 
+    
+
     useEffect(()=>{
         const fetchData = async() =>{
             const docRef = doc(db, "projects", id);
@@ -103,12 +123,12 @@ const page = ({params}) => {
         }
 
         fetchData()
-    }, [])
+    }, [id]);
 
     return (
         <div className=''>
             <Card className='mx-20 my-2 '>
-                <CardContent className='p-0'>
+                <CardContent className='p-0'>   
                     <div className="grid grid-cols-2 gap-4">
                         {/* images */}
                         <div className="m-2 grid grid-cols-3 gap-2">
