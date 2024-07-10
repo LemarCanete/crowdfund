@@ -83,6 +83,7 @@ const ReviewForm = ({ projectId }) => {
                 alert("Please login to add a review.");
             }
         }
+        window.location.reload();
     };
 
     return (
