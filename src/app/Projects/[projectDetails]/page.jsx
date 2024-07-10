@@ -69,6 +69,7 @@ const ReviewForm = ({ projectId }) => {
                 setReview('');
             } catch (error) {
                 console.error('Error adding review: ', error);
+                alert("Please login to add a review.");
             }
         }
     };
