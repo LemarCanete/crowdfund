@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function CheckoutForm({cash, setCash, addDonate}) {
+export default function CheckoutForm({cash, setCash, addDonate, projectDetails}) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -49,47 +49,54 @@ export default function CheckoutForm({cash, setCash, addDonate}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (!stripe || !elements) {
-        // Stripe.js hasn't yet loaded.
-        // Make sure to disable form submission until Stripe.js has loaded.
             return;
         }
-
+    
         setIsLoading(true);
-
-        const { error, paymentIntent } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: "http://localhost:3000/DonateSuccessPage",   
-            },
-        });
-
-        console.log(paymentIntent.status)
-
-        if (paymentIntent.status === "succeeded") {
-            try {
-                alert("Success")
-                addDonate();
-                setMessage("Payment succeeded!");
-            } catch (error) {
-                setMessage("Failed to update the donation record.");
-                console.error("Error updating document: ", error);
+    
+        try {
+            const { error, paymentIntent  } = await stripe.confirmPayment({
+                elements,
+                // Remove the return_url parameter
+                // confirmParams: {
+                //     return_url: "http://localhost:3000/DonateSuccessPage",
+                // },
+                redirect: "if_required", // Prevents automatic redirection
+            });
+    
+            if (error) {
+                console.error("Error confirming payment:", error);
+                if (error.type === "card_error" || error.type === "validation_error") {
+                    setMessage(error.message);
+                } else {
+                    setMessage("An unexpected error occurred.");
+                }
+                setIsLoading(false);
+                return;
             }
-        } else {
-            setMessage("Something went wrong.");
-        }
+    
+            console.log("PaymentIntent status:", paymentIntent.status);
+    
+            if (paymentIntent.status === "succeeded") {
+                alert("Success");
+                await addDonate();
+                setMessage("Payment succeeded!");
 
-        if (error.type === "card_error" || error.type === "validation_error") {
-            setMessage(error.message);
-        } else {
-            setMessage("An unexpected error occurred.");
+                // Manually redirect after showing the alert
+                window.location.reload()
+            } else {
+                setMessage("Something went wrong.");
+            }
+        } catch (error) {
+            console.error("Error during payment submission:", error);
+            setMessage("An error occurred. Please try again.");
         }
-
-        
     
         setIsLoading(false);
     };
+    
 
     const paymentElementOptions = {
         layout: "tabs",
@@ -97,15 +104,15 @@ export default function CheckoutForm({cash, setCash, addDonate}) {
 
     return (
         <div className="grid grid-cols-2 gap-16">
+
             <div className="bg-white p-4 rounded shadow-md ">
-                <img src="/Project1.jpg" alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
-                <h3 className="text-xl font-bold">Typhoon Bopha Relief Fund</h3>
-                <p className="mt-2">Typhoon Bopha devastated communities in the Philippines, leaving many without homes and basic necessities. 
-                    Your contribution will provide essential relief and help rebuild lives.</p>
-                    <Progress value={35} className="w-[85%] mt-4" />
+                <img src={projectDetails.coverPhoto} alt={projectDetails.title} className="w-full h-48 object-cover rounded mb-4"/>
+                <h3 className="text-xl font-bold">{projectDetails.title}</h3>
+                <p className="mt-2">{projectDetails.description}</p>
+                    <Progress value={(projectDetails.raisedAmount/projectDetails.targetAmount) * 100} className="w-[85%] mt-4" />
                     <div className="flex flex-row">
-                    <p className="basis-1/2">Raised:70,000 php</p>
-                    <p className="basis-1/2">Goal:200,000 php</p>
+                    <p className="basis-1/2">Raised: {projectDetails.raisedAmount} php</p>
+                    <p className="basis-1/2">Goal: {projectDetails.targetAmount} php</p>
                     </div>
                 <Button className="mt-4">More Details</Button>
             </div>

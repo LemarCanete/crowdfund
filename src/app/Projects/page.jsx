@@ -50,9 +50,9 @@ export default function Projects() {
                         return (
                             <div className="bg-white p-4 rounded shadow-md" key={key}>
                                 <img src={proj.coverPhoto} alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
-                                <h3 className="text-xl font-bold">{proj.title}</h3>
-                                <p className="mt-2">{proj.description}</p>
-                                    <Progress value={proj.raisedAmount/proj.targetAmount} className="w-[85%] mt-4" />
+                                <h3 className="text-xl font-bold text-wrap">{proj.title}</h3>
+                                <p className="mt-2 text-wrap">{proj.description}</p>
+                                    <Progress value={(proj.raisedAmount/proj.targetAmount)*100} className="mt-4" />
                                     <div className="flex flex-row">
                                     <p className="basis-1/2">{proj.raisedAmount} php</p>
                                     <p className="basis-1/2">Goal: {Number(proj.targetAmount).toLocaleString()} php</p>

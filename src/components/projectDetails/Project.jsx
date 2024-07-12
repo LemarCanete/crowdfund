@@ -89,7 +89,7 @@ const Project = ({projectDetails}) => {
                                     <p className="text-slate-500 text-sm tracking-wide leading-6 p-2">{projectDetails.description}</p>
                                 </div>
 
-                                <Progress value={projectDetails.raisedAmount/projectDetails.targetAmount || 33} />
+                                <Progress value={(projectDetails.raisedAmount/projectDetails.targetAmount) * 100 || 33} />
 
                                 {/* target, date, donate button */}
                                 <div className="flex justify-between text-sm my-2 items-center">
@@ -104,7 +104,7 @@ const Project = ({projectDetails}) => {
                                         <BsCalendar className='self-center'/>
                                         <p className="">July 4 - July 8</p>
                                     </div>
-                                    <Button className='' onClick={()=> router.push('/Payment')}>Donate</Button>
+                                    <Button className='' onClick={()=> router.push(`/Payment/${projectDetails.uid}`)}>Donate</Button>
                                 </div>
 
                                 <p className="bg-slate-100 rounded-lg text-slate-500 text-sm tracking-wide leading-6 p-2">Note: {projectDetails.notes}</p>
