@@ -32,7 +32,7 @@ const page = ({params}) => {
                 author = doc.data()
             });
 
-            setProjectDetails({...docSnap.data(), user: author});
+            setProjectDetails({...docSnap.data(), user: author, uid: id});
         }
 
         fetchData()
@@ -48,7 +48,7 @@ const page = ({params}) => {
         }else if(tabSelected === 4){
             return <ProjectSettings projectDetails={projectDetails}/>
         }else{
-            return <Project projectDetails={projectDetails}/>
+            return <Project projectDetails={projectDetails} />
         }
     }
 
