@@ -30,6 +30,7 @@ import {
   } from "@/components/ui/hover-card"
 import { RiSettings4Line, RiSettingsLine, RiVerifiedBadgeFill } from "react-icons/ri";
 import Share from '@/components/ShareLink'
+import ReviewForm from '@/components/ReviewForm'
 
 
 const Project = ({projectDetails}) => {
@@ -127,7 +128,7 @@ const Project = ({projectDetails}) => {
                     </TabsContent>
                     <TabsContent value="updates">Updates</TabsContent>
                     <TabsContent value="backerList">Backer list</TabsContent>
-                    <TabsContent value="reviews">Add a review</TabsContent>
+                    <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
                 </Tabs>
                 <div className="lg:col-span-2">
                     <h3 className="font-bold tracking-wider">Support other projects</h3>
