@@ -31,7 +31,7 @@ import {
 import { RiSettings4Line, RiSettingsLine, RiVerifiedBadgeFill } from "react-icons/ri";
 import Share from '@/components/ShareLink'
 import ReviewForm from '@/components/ReviewForm'
-
+import Updates from '@/components/Updates'
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
@@ -126,7 +126,7 @@ const Project = ({projectDetails}) => {
                         <h1 className="text-xl">About</h1>
                         <p className="">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos repellat, fugiat harum eius sapiente nobis voluptate corrupti obcaecati itaque architecto fuga adipisci esse sint assumenda temporibus reprehenderit tempora unde amet?</p>
                     </TabsContent>
-                    <TabsContent value="updates">Updates</TabsContent>
+                    <TabsContent value="updates"><Updates projectDetails={projectDetails}/></TabsContent>
                     <TabsContent value="backerList">Backer list</TabsContent>
                     <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
                 </Tabs>

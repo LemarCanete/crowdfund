@@ -54,14 +54,14 @@ const page = ({params}) => {
 
     return (
         <div className=''>
-            <div className="flex mx-20 gap-2">
+            {currentUser.uid && <div className="flex mx-20 gap-2">
                 <Button className={`${tabSelected === 1 && 'underline'}`} variant="ghost" onClick={() => setTabSelected(1)}>Project</Button>
                 <Button className={`${tabSelected === 2 && 'underline'}`} variant="ghost" onClick={() => setTabSelected(2)}>Analytics</Button>
                 <Button className={`${tabSelected === 3 && 'underline'}`} variant="ghost" onClick={() => setTabSelected(3)}>Logs</Button>
                 <Button className={`${tabSelected === 4 && 'underline'}`} variant="ghost" onClick={() => setTabSelected(4)}>Settings</Button>
-            </div>
+            </div>}
 
-            {currentUser.uid && projectDetails && <RenderTabSelected />}
+            {projectDetails && <RenderTabSelected />}
         </div>
     )
 }
