@@ -89,7 +89,7 @@ const Project = ({projectDetails}) => {
                                     <p className="text-slate-500 text-sm tracking-wide leading-6 p-2">{projectDetails.description}</p>
                                 </div>
 
-                                <Progress value={(projectDetails.raisedAmount/projectDetails.targetAmount) * 100 || 33} />
+                                <Progress value={(projectDetails.raisedAmount/projectDetails.targetAmount) * 100 || 0} />
 
                                 {/* target, date, donate button */}
                                 <div className="flex justify-between text-sm my-2 items-center">
@@ -115,17 +115,17 @@ const Project = ({projectDetails}) => {
             </Card>
             
             <div className="grid lg:grid-cols-6 grid-cols-1 lg:mx-20 mx-auto my-8">
-                <Tabs defaultValue="about" className="col-span-4">
+                <Tabs defaultValue="updates" className="col-span-4">
                     <TabsList>
-                        <TabsTrigger value="about">About</TabsTrigger>
+                        {/* <TabsTrigger value="about">About</TabsTrigger> */}
                         <TabsTrigger value="updates">Updates</TabsTrigger>
                         <TabsTrigger value="backerList">Backer List</TabsTrigger>
                         <TabsTrigger value="reviews">Reviews</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="about">
+                    {/* <TabsContent value="about">
                         <h1 className="text-xl">About</h1>
                         <p className="">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos repellat, fugiat harum eius sapiente nobis voluptate corrupti obcaecati itaque architecto fuga adipisci esse sint assumenda temporibus reprehenderit tempora unde amet?</p>
-                    </TabsContent>
+                    </TabsContent> */}
                     <TabsContent value="updates"><Updates projectDetails={projectDetails}/></TabsContent>
                     <TabsContent value="backerList">Backer list</TabsContent>
                     <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
