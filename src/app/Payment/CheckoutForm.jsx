@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function CheckoutForm({cash, setCash, addDonate, projectDetails}) {
+export default function CheckoutForm({cash, setCash, addDonate, projectDetails, note, setNote}) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -123,6 +124,9 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails})
 
                 <Label htmlFor="cash" className="font-light text-base mt-96">Donation Amount</Label>
                 <Input type="number" id="cash" value={cash} onChange={(e) => setCash(e.target.value)}/>
+
+                <Label htmlFor="message" className="font-light text-base mt-96">Message</Label>
+                <Textarea placeholder="Type message here..." value={note} onChange={(e) => setNote(e.target.value)}/>
 
                 <Button disabled={isLoading || !stripe || !elements} id="submit" className="mt-4">
                     <span id="button-text">
