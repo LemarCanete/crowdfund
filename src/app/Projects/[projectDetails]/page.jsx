@@ -46,7 +46,7 @@ const page = ({params}) => {
         }else if(tabSelected === 3){
             return <Logs projectDetails={projectDetails}/>
         }else if(tabSelected === 4){
-            return <ProjectSettings projectDetails={projectDetails}/>
+            return <ProjectSettings projectId={projectDetails.uid} />;
         }else{
             return <Project projectDetails={projectDetails} />
         }
