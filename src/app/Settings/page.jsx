@@ -24,6 +24,7 @@ const Page = () => {
     const [email, setEmail] = useState("");
     const [location, setLocation] = useState("");
     const [contactNo, setContactNo] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -61,6 +62,8 @@ const Page = () => {
                     location,
                     contactNo
                 });
+                setMessage("Changes Saved");
+                setTimeout(() => setMessage(""), 3000);
                 console.log("Document successfully written!");
             } catch (e) {
                 console.error("Error writing document: ", e);
@@ -110,6 +113,7 @@ const Page = () => {
                         </CardContent>
                         <CardFooter>
                             <Button onClick={handleSaveChanges}>Save changes</Button>
+                            {message && <p className="ml-4 text-green-500">{message}</p>}
                         </CardFooter>
                     </Card>
                 </TabsContent>
