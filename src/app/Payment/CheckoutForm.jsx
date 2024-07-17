@@ -9,8 +9,17 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { CiCircleInfo } from "react-icons/ci";
 
-export default function CheckoutForm({cash, setCash, addDonate, projectDetails, note, setNote}) {
+  
+export default function CheckoutForm({cash, setCash, addDonate, projectDetails, note, setNote, setIsPrivate, isPrivate}) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -98,11 +107,9 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
         setIsLoading(false);
     };
     
-
     const paymentElementOptions = {
         layout: "tabs",
     };
-
     return (
         <div className="grid grid-cols-2 gap-16">
 
@@ -127,6 +134,20 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
 
                 <Label htmlFor="message" className="font-light text-base mt-96">Message</Label>
                 <Textarea placeholder="Type message here..." value={note} onChange={(e) => setNote(e.target.value)}/>
+                
+                <div className="flex items-center space-x-2 my-2">
+                    <Switch id="isPublic" checked={isPrivate} onCheckedChange={setIsPrivate}/>
+                    <Label htmlFor="isPublic">Be anonymous?</Label>
+
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger type="button"><CiCircleInfo className="text-2xl"/></TooltipTrigger>
+                                <TooltipContent className="">
+                                    <p>Toggle this switch to make your donation private or public</p>
+                                </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
 
                 <Button disabled={isLoading || !stripe || !elements} id="submit" className="mt-4">
                     <span id="button-text">

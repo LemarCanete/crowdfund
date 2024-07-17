@@ -2,11 +2,34 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { db } from '@/utils/firebase-config';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 
 function ProfilePage() {
   const { currentUser } = useContext(AuthContext);
   const [contributions, setContributions] = useState([]);
+  const [aboutMe, setAboutMe] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [aboutMeText, setAboutMeText] = useState('');
+
+  useEffect(() => {
+    const fetchAboutMe = async () => {
+      if (currentUser) {
+        try { 
+          const userDocRef = doc(db, 'aboutme', currentUser.uid);
+          const userSnapshot = await getDoc(userDocRef);
+          if (userSnapshot.exists()) {
+            setAboutMe(userSnapshot.data().aboutMe || '');
+          }
+        } catch (error) { 
+          console.error('Error fetching about me data:', error);
+        }
+      }
+    };
+
+    fetchAboutMe();
+  }, [currentUser]);
+
+
 
   /*useEffect(() => {
     const fetchContributions = async () => {
@@ -29,6 +52,29 @@ function ProfilePage() {
   }
     /** */
 
+    const handleSave = async () => {
+      if (currentUser) {
+        try { 
+          const userDocRef = doc(db, 'aboutme', currentUser.uid);
+          const userSnapshot = await getDoc(userDocRef);
+          if (userSnapshot.exists()) {
+            await updateDoc(userDocRef, {
+              aboutMe: aboutMeText,
+            });
+          } else {
+            await setDoc(userDocRef, {
+              aboutMe: aboutMeText,
+            });
+          }
+          setAboutMe(aboutMeText);
+          setIsEditing(false);
+          alert('About me updated successfully');
+        } catch (error) { 
+          alert('Error updating about me');
+        }
+      }
+    };
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex items-center mb-6">
@@ -45,11 +91,22 @@ function ProfilePage() {
 
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-4">About Me</h2>
-        <p className="text-gray-700">
-        Hello! I'm {currentUser.displayName || 'Anonymous'}, a passionate advocate for positive change and community empowerment. 
-        I believe in the power of kindness and strive to make a difference in the lives of those around me. 
-        Whether it’s volunteering at local shelters or mentoring youth, I’m dedicated to uplifting others.
-        </p>
+        {isEditing ? (
+          <div>
+            <textarea
+              value={aboutMeText}
+              onChange={(e) => setAboutMeText(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Describe yourself"
+            />
+            <button onClick={handleSave} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+          </div>
+        ) : (
+          <p className="text-gray-700">
+            {aboutMe || 'Describe yourself'}
+            <button onClick={() => { setAboutMeText(aboutMe); setIsEditing(true); }} className="ml-2 text-blue-500">Edit</button>
+          </p>
+        )}
       </div>
 
       <div className="mb-6">

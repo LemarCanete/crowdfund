@@ -1,22 +1,29 @@
 "use client";
-
+import { useContext } from 'react';
 import { Button } from "@/components/ui/button";
 import React, { useRef, useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, getFirestore } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, getFirestore, query, where, onSnapshot } from "firebase/firestore";
+import { AuthContext } from '@/context/AuthContext';
+import { auth, db } from "@/utils/firebase-config"
+import { useRouter } from 'next/navigation';
 
 const Bookmarks = () => {
+  
+
+  const { currentUser } = useContext(AuthContext);
   const bookmarkedRef = useRef(null);
   const [bookmarkedProjects, setBookmarkedProjects] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
 
   useEffect(() => {
-    fetchAllProjects();
-    fetchBookmarkedProjects();
-  }, []);
+    if (currentUser) {
+      fetchAllProjects();
+      fetchBookmarkedProjects(); 
+    }
+  }, [currentUser]); 
 
   const fetchAllProjects = async () => {
     try {
-      
       const projects = [
         {
           id: 1,
@@ -59,7 +66,8 @@ const Bookmarks = () => {
   const fetchBookmarkedProjects = async () => {
     const db = getFirestore();
     try {
-      const querySnapshot = await getDocs(collection(db, "bookmarks"));
+      const q = query(collection(db, "bookmarks"), where("userId", "==", currentUser.uid));
+      const querySnapshot = await getDocs(q);
       const projects = [];
       querySnapshot.forEach((doc) => {
         projects.push({ id: doc.id, ...doc.data() });
@@ -77,7 +85,8 @@ const Bookmarks = () => {
       const docRef = await addDoc(collection(db, "bookmarks"), {
         title: proj.title,
         description: proj.description,
-        coverPhoto: proj.coverPhoto
+        coverPhoto: proj.coverPhoto,
+        userId: currentUser.uid
       });
       console.log("Document written with ID: ", docRef.id);
       fetchBookmarkedProjects(); 
@@ -101,14 +110,13 @@ const Bookmarks = () => {
   const handleRemoveBookmark = async (projectId) => {
     const db = getFirestore();
     try {
-      await db.collection("bookmarks").doc(projectId).delete();
+      await deleteDoc(doc(db, "bookmarks", projectId));
       fetchBookmarkedProjects(); 
     } catch (error) {
       console.error("Error removing bookmark: ", error);
     }
   };
 
-  
   const filteredProjects = allProjects.filter(project => !bookmarkedProjects.find(bm => bm.title === project.title));
 
   return (
@@ -122,7 +130,10 @@ const Bookmarks = () => {
                 <img src={project.coverPhoto} alt={project.title} className="w-full h-48 object-cover rounded mb-4" />
                 <h3 className="text-xl font-bold">{project.title}</h3>
                 <p className="mt-2">{project.description}</p>
-                <Button className="mt-4" onClick={() => handleRemoveBookmark(project.id)}>Remove Bookmark</Button>
+                <div className='flex space x-4'>
+                <Button className='mt-4'>More Details</Button>
+                <Button className="mt-4 ml-auto" onClick={() => handleRemoveBookmark(project.id)}>Remove Bookmark</Button>
+                </div>
               </div>
             ))}
           </div>
@@ -139,8 +150,7 @@ const Bookmarks = () => {
               <img src={project.coverPhoto} alt={project.title} className="w-full h-48 object-cover rounded mb-4" />
               <h3 className="text-xl font-bold">{project.title}</h3>
               <p className="mt-2">{project.description}</p>
-              <div className="flex space x-16">
-              <Button className="mt-4">Support</Button>
+              <div>
               <Button className="mt-4 ml-auto" onClick={() => handleAddBookmark(project.title, project.description, project.coverPhoto)}>Bookmark</Button>
               </div>
             </div>

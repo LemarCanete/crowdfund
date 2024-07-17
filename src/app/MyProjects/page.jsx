@@ -1,5 +1,5 @@
 'use client'
-import {React, useState, useEffect} from "react"
+import {React, useState, useEffect, useContext} from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -9,30 +9,17 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/utils/firebase-config"
 
 import { useRouter } from "next/navigation"
-import { onAuthStateChanged } from "firebase/auth"
-import { isEmptyArray } from "formik"
+import { AuthContext } from "@/context/AuthContext"
 
 export default function Projects() {
     const router = useRouter();
     const [projects, setProjects] = useState([]);
-    const [author, setAuthor] = useState({uid: 1});
+    const {currentUser} = useContext(AuthContext)
 
-    // get user
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log(user)
-                setAuthor(user);
-            } else {
-                setAuthor(null);
-            }
-        });
-        return () => unsubscribe();
-    }, [])
 
     useEffect(()=>{
         const fetchData = async() =>{
-            const q = query(collection(db, "projects"), where("author", "==", author.uid));
+            const q = query(collection(db, "projects"), where("author", "==", currentUser.uid));
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const proj = [];
                 querySnapshot.forEach((doc) => {
@@ -41,13 +28,12 @@ export default function Projects() {
                 setProjects(proj)
             });
         }
-        author.uid && fetchData();
-        console.log(author)
-    }, [author])
+        currentUser.uid && fetchData();
+    }, [])
 
     
 
-    console.log(projects)
+    console.log(projects, currentUser.uid)
 
     return (
         <main className="container mx-auto p-4">

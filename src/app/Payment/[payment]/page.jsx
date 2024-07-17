@@ -22,6 +22,7 @@ export default function Page({params}) {
     const [clientSecret, setClientSecret] = useState("");
     const [cash, setCash] = useState(50)
     const [note, setNote] = useState("")
+    const [isPrivate, setIsPrivate] = useState(false);
     const {currentUser} = useContext(AuthContext)
     const router = useRouter()
     const [projectDetails, setProjectDetails] = useState([])
@@ -71,7 +72,7 @@ export default function Page({params}) {
             // Add a new document with a generated id.
             const docRef = await addDoc(collection(db, "donations"), {
                 amount: cash,
-                user: currentUser.uid || 'anonymous',
+                user: !isPrivate ? currentUser.uid : 'anonymous',
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now(),
                 status: "Succeeded",
@@ -101,7 +102,7 @@ export default function Page({params}) {
                 <div className="w-4/6 mx-auto">
                     <Elements options={options} stripe={stripePromise}>
                         <Button variant="link" className="flex gap-4 items-center cursor-pointer" onClick={()=>router.back()} ><IoMdArrowBack /> Back</Button>
-                        {projectDetails && <CheckoutForm cash={cash} setCash={setCash} note={note} setNote={setNote} addDonate={addDonate} projectDetails={projectDetails}/>}
+                        {projectDetails && <CheckoutForm cash={cash} setCash={setCash} note={note} setNote={setNote} setIsPrivate={setIsPrivate} isPrivate={isPrivate} addDonate={addDonate} projectDetails={projectDetails}/>}
                     </Elements>
                 </div>
             )}
