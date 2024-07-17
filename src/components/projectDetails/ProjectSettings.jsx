@@ -62,15 +62,15 @@ const ProjectSettings = ({ projectId }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
+    return <div className='mx-20'>Loading...</div>;
+  } 
 
   if (!projectData) {
     return <div>No project data found.</div>;
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white rounded-lg shadow-md mx-20">
       <h2 className="text-2xl font-bold mb-4">Project Settings</h2>
 
     
