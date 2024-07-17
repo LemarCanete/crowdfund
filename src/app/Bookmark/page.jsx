@@ -16,7 +16,6 @@ const Bookmarks = () => {
   const [allProjects, setAllProjects] = useState([]);
 
   useEffect(() => {
-  fetchData();
     if (currentUser) {
       fetchAllProjects();
       fetchBookmarkedProjects(); 
