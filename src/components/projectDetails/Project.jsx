@@ -32,6 +32,7 @@ import { RiSettings4Line, RiSettingsLine, RiVerifiedBadgeFill } from "react-icon
 import Share from '@/components/ShareLink'
 import ReviewForm from '@/components/ReviewForm'
 import Updates from '@/components/Updates'
+import { TbCurrencyPeso } from "react-icons/tb";
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
@@ -96,7 +97,7 @@ const Project = ({projectDetails}) => {
                                     <div className="flex gap-2">
                                         <BsCoin/>
                                         <div className="">
-                                            <p className="font-extrabold">$ {projectDetails.raisedAmount}</p>
+                                            <p className="font-extrabold"><TbCurrencyPeso className='inline'/> {projectDetails.raisedAmount}</p>
                                             <p className="">Total Raised</p>
                                         </div>
                                     </div>

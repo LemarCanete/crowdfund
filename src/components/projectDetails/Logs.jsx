@@ -11,9 +11,8 @@ const Logs = ({projectDetails}) => {
             <DonationLogs projectDetails={projectDetails}/>
 
             <h1 className="">Admin Actions Logs</h1>
-            <AdminActionsLogs />
-            <h1 className="">Update Logs</h1>
-            <h1 className="">Comment Logs</h1>
+            {/* <AdminActionsLogs /> */}
+            <h1 className="">Review Logs</h1>
             <h1 className="">Milestone Logs</h1>
         </div>
     )
