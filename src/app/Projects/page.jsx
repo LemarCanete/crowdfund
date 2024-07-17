@@ -61,42 +61,9 @@ export default function Projects() {
                             </div>
                         )
                     })}
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="/Project1.jpg" alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Typhoon Bopha Relief Fund</h3>
-                        <p className="mt-2">Typhoon Bopha devastated communities in the Philippines, leaving many without homes and basic necessities. 
-                            Your contribution will provide essential relief and help rebuild lives.</p>
-                            <Progress value={35} className="w-[85%] mt-4" />
-                            <div className="flex flex-row">
-                            <p className="mt-4">Raised:70,000 php</p>
-                            <p className="mt-4 ml-auto">Goal:200,000 php</p>
-                            </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="/Project2.jpg" alt="Project 2" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Anti-poverty Program</h3>
-                        <p className="mt-2">Our Anti-poverty Program aims to alleviate poverty by providing education, resources, and support to 
-                            underprivileged communities. Join us in empowering individuals to build a better future.</p>
-                            <Progress value={40} className="w-[85%] mt-4" />
-                            <div className="flex flex-row">
-                            <p className="mt-4">Raised:140,000 php</p>
-                            <p className="mt-4 ml-auto">Goal:350,000 php</p>
-                            </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="Project3.jpg" alt="Project 3" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Malnutrition In The Philippines</h3>
-                        <p className="mt-2">Help us combat malnutrition in the Philippines by providing nutritious food and education on healthy eating. 
-                            Your support can save lives and promote healthier communities.</p>
-                            <Progress value={85} className="w-[85%] mt-4" />
-                            <div className="flex flex-row">
-                            <p className="mt-4">Raised:255,000 php</p>
-                            <p className="mt-4 ml-auto">Goal:300,000 php</p>
-                            </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
+                    
+                    
+                    
                     <div className="bg-white p-4 rounded shadow-md">
                         <img src="Project4.jpg" alt="Project 4" className="w-full h-48 object-cover rounded mb-4"/>
                         <h3 className="text-xl font-bold">Cultural Heritage Preservation</h3>
