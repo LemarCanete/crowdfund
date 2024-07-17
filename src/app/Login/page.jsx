@@ -15,26 +15,35 @@ import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 
 // auth
-import {sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth, db, provider } from '@/utils/firebase-config'
+import {getAuth, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, browserLocalPersistence } from 'firebase/auth'
+import { db, provider } from '@/utils/firebase-config'
 import { addDoc, collection, setDoc } from 'firebase/firestore'
 
 const page = () => {
-    const router = useRouter('/')
+    const router = useRouter()
 
+    const auth = getAuth();
     const signIn = (email, password) =>{
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log('signed in', user)
-            router.push('/')
-            return true
+        setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log('signed in', user)
+                router.push('/')
+                return true
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                return false
+            });
         })
         .catch((error) => {
+            // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
-            return false
         });
     }
 
@@ -47,7 +56,7 @@ const page = () => {
     }
 
     const signInGoogle = () =>{
-        console.log('unsa na ni')
+        
         signInWithPopup(auth, provider)
         .then(async(result) => {
             const docRef = await addDoc(collection(db, "users"), {

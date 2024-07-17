@@ -33,6 +33,8 @@ import Share from '@/components/ShareLink'
 import ReviewForm from '@/components/ReviewForm'
 import Updates from '@/components/Updates'
 import { TbCurrencyPeso } from "react-icons/tb";
+import { format } from 'date-fns';
+import BackerList from '@/components/BackerList'
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
@@ -78,7 +80,7 @@ const Project = ({projectDetails}) => {
                                     <Toggle><CiBookmark className='text-xl'/></Toggle>
                                     <Toggle><CiHeart className='text-xl'/></Toggle>
                                     <Share />
-                                    <Toggle><CiFlag1 className='text-xl'/></Toggle>
+                                    {/* <Toggle><CiFlag1 className='text-xl'/></Toggle> */}
                                 </div>
                             </div>
 
@@ -103,7 +105,7 @@ const Project = ({projectDetails}) => {
                                     </div>
                                     <div className="flex gap-2">
                                         <BsCalendar className='self-center'/>
-                                        <p className="">July 4 - July 8</p>
+                                        <p className="">{format(projectDetails.date.from.toDate(), "MMMM dd, yyyy") + ' - ' + format(projectDetails.date.to.toDate(), "MMMM dd, yyyy")}</p>
                                     </div>
                                     <Button className='' onClick={()=> router.push(`/Payment/${projectDetails.uid}`)}>Donate</Button>
                                 </div>
@@ -128,7 +130,7 @@ const Project = ({projectDetails}) => {
                         <p className="">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos repellat, fugiat harum eius sapiente nobis voluptate corrupti obcaecati itaque architecto fuga adipisci esse sint assumenda temporibus reprehenderit tempora unde amet?</p>
                     </TabsContent> */}
                     <TabsContent value="updates"><Updates projectDetails={projectDetails}/></TabsContent>
-                    <TabsContent value="backerList">Backer list</TabsContent>
+                    <TabsContent value="backerList"><BackerList projectDetails={projectDetails}/></TabsContent>
                     <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
                 </Tabs>
                 <div className="lg:col-span-2">

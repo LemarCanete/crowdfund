@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { auth, db } from "@/utils/firebase-config";  // Assuming you have a reference to your Firestore database
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export const AuthContext = createContext();
 
@@ -12,12 +13,19 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userDocRef = doc(db, "users", user.uid);  // Assuming you have a 'users' collection in Firestore
-        const userDocSnapshot = await getDoc(userDocRef);
 
-        if (userDocSnapshot.exists()) {
-          const userData = userDocSnapshot.data();
-          setCurrentUser({ ...user, ...userData });
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+
+        const querySnapshot = await getDocs(q);
+        const userDetails = [];
+        querySnapshot.forEach((doc) => {
+            userDetails.push(doc.data());
+        });
+
+        const userData = userDetails[0]
+
+        if (user) {
+          setCurrentUser({ ...user, ...userData[0] });
         } else {
           setCurrentUser(user);
         }

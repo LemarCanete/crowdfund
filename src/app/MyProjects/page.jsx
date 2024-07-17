@@ -9,8 +9,6 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/utils/firebase-config"
 
 import { useRouter } from "next/navigation"
-import { onAuthStateChanged } from "firebase/auth"
-import { isEmptyArray } from "formik"
 import { AuthContext } from "@/context/AuthContext"
 
 export default function Projects() {
@@ -35,7 +33,7 @@ export default function Projects() {
 
     
 
-    console.log(projects)
+    console.log(projects, currentUser.uid)
 
     return (
         <main className="container mx-auto p-4">

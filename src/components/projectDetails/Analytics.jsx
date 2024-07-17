@@ -63,6 +63,7 @@ const Analytics = ({projectDetails}) => {
         fetchData();
     }, [projectDetails.uid]);   
 
+    // fetch reviews
     useEffect(() => {
         const fetchData = async() =>{
 
@@ -79,6 +80,7 @@ const Analytics = ({projectDetails}) => {
         fetchData()
     }, [])
 
+    // fetch updates
     useEffect(() => {
         const fetchData = async() =>{
 
