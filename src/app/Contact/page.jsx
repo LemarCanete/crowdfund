@@ -8,7 +8,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import emailjs from 'emailjs-com';
 
 
-emailjs.init('RwNa38prtPxqOLj1u');
+emailjs.init('2qSkl3uDgUB7rmuwY');
 
 const ContactUsPage = () => {
     const [name, setName] = useState('');
@@ -21,7 +21,7 @@ const ContactUsPage = () => {
 
         // Send email via EmailJS
         try {
-            const emailResult = await emailjs.send('service_imzclyg', 'template_4oupmxa', {
+            const emailResult = await emailjs.send('service_ndgyaab', 'template_2uvhcsk', {
                 name,
                 email,
                 subject,
