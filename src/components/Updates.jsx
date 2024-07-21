@@ -191,9 +191,9 @@ const Updates = ({projectDetails}) => {
             <div className="flex justify-between w-11/12 items-center mb-2">
                 <h1 className="font-bold">Updates</h1>
                 <Dialog>
-                    <DialogTrigger asChild>
+                    {currentUser.uid === projectDetails?.user.uid && <DialogTrigger asChild>
                         <Button variant="ghost"> <FaPlus />  Add an Update</Button>
-                    </DialogTrigger>
+                    </DialogTrigger>}
                     <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
                         <DialogTitle>Add Update</DialogTitle>

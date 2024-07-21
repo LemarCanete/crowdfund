@@ -16,8 +16,9 @@ export default function Projects() {
     const [projects, setProjects] = useState([]);
     const {currentUser} = useContext(AuthContext)
 
-
     useEffect(()=>{
+
+
         const fetchData = async() =>{
             const q = query(collection(db, "projects"), where("author", "==", currentUser.uid));
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -30,8 +31,6 @@ export default function Projects() {
         }
         currentUser.uid && fetchData();
     }, [])
-
-    
 
     console.log(projects, currentUser.uid)
 

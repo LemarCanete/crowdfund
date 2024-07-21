@@ -35,7 +35,6 @@ const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
     const {currentUser} = useContext(AuthContext)
-    console.log(currentUser)
 
     return (
         <nav className='flex justify-between p-5'>
