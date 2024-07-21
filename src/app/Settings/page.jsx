@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Card,
@@ -14,11 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import VerifyAccount from "@/components/settings/VerifyAccount";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { db, auth } from '@/utils/firebase-config';
+import { db } from '@/utils/firebase-config';
+import { AuthContext } from '@/context/AuthContext';
 
 const Page = () => {
-    const [userID, setUserID] = useState(null);
+    const { currentUser } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -27,10 +27,11 @@ const Page = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                setUserID(user.uid);
-                const docRef = doc(db, 'users', user.uid);
+        console.log(currentUser);
+
+        if (currentUser) {
+            const fetchUserData = async () => {
+                const docRef = doc(db, 'users', currentUser.uid);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
@@ -43,18 +44,18 @@ const Page = () => {
                 } else {
                     console.log("No such document!");
                 }
-            } else {
-                console.log("No user is signed in.");
-            }
-        });
+            };
 
-        return () => unsubscribe();
-    }, []);
+            fetchUserData();
+        } else {
+            console.log("No user is signed in.");
+        }
+    }, [currentUser]);
 
     const handleSaveChanges = async () => {
-        if (userID) {
+        if (currentUser) {
             try {
-                const docRef = doc(db, 'users', userID);
+                const docRef = doc(db, 'users', currentUser.uid);
                 await setDoc(docRef, {
                     name,
                     username,
