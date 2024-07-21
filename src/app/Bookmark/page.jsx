@@ -5,11 +5,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, deleteDoc, doc, getFirestore, query, where, onSnapshot } from "firebase/firestore";
 import { AuthContext } from '@/context/AuthContext';
 import { auth, db } from "@/utils/firebase-config"
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation"
+
 
 const Bookmarks = () => {
   
-
   const { currentUser } = useContext(AuthContext);
   const bookmarkedRef = useRef(null);
   const [bookmarkedProjects, setBookmarkedProjects] = useState([]);
@@ -23,45 +23,19 @@ const Bookmarks = () => {
   }, [currentUser]); 
 
   const fetchAllProjects = async () => {
+    const db = getFirestore();
     try {
-      const projects = [
-        {
-          id: 1,
-          title: "Typhoon Bopha Relief Fund",
-          description: "Typhoon Bopha devastated communities in the Philippines...",
-          coverPhoto: "/Project1.jpg"
-        },
-        {
-          id: 2,
-          title: "Anti-poverty Program",
-          description: "Our Anti-poverty Program aims to alleviate poverty by providing education...",
-          coverPhoto: "/Project2.jpg"
-        },
-        {
-          id: 3,
-          title: "Malnutrition In The Philippines",
-          description: "Help us combat malnutrition in the Philippines by providing nutritious food...",
-          coverPhoto: "/Project3.jpg"
-        },
-        {
-          id: 4,
-          title: "Cultural Heritage Preservation",
-          description: "This Project aims at preserving and promoting the rich cultural heritage...",
-          coverPhoto: "/Project4.jpg"
-        },
-        {
-          id: 5,
-          title: "Education for All: Scholarship Fund",
-          description: "Provide scholarships for underprivileged students in rural areas...",
-          coverPhoto: "/Project5.jpg"
-        }
-      ];
-
+      const querySnapshot = await getDocs(collection(db, "projects"));
+      const projects = [];
+      querySnapshot.forEach((doc) => {
+        projects.push({ id: doc.id, ...doc.data() });
+      });
       setAllProjects(projects);
     } catch (error) {
       console.error("Error fetching all projects: ", error);
     }
   };
+
 
   const fetchBookmarkedProjects = async () => {
     const db = getFirestore();
@@ -140,7 +114,7 @@ const Bookmarks = () => {
         </section>
       </header>
 
-      <header className="text-center my-8">
+     <header className="text-center my-8">
         <h1 className="text-2xl font-bold">More Projects</h1>
       </header>
       <section className="my-8">
