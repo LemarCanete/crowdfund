@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from "@/utils/firebase-config";
 import { Input } from '@/components/ui/input';
+import { useToast } from "@/components/ui/use-toast"
 
 const ProjectSettings = ({ projectId }) => {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -32,22 +34,33 @@ const ProjectSettings = ({ projectId }) => {
 
   const handleUpdate = async () => {
     try {
-      const docRef = doc(db, 'projects', projectId);
-      await updateDoc(docRef, projectData);
-      alert("Project successfully updated!");
-     
+        const docRef = doc(db, 'projects', projectId);
+        await updateDoc(docRef, projectData);
+        toast({
+            title: "Update Successfully!",
+            description: "The project has been updated",
+        })
     } catch (error) {
-      alert("Error, failed to update!");
+        toast({
+            title: "Error! Failed to update!",
+            description: "There was a problem. Pls try again!.",
+        })
     }
   };
 
   const handleDelete = async () => {
     try {
-      const docRef = doc(db, 'projects', projectId);
-      await deleteDoc(docRef); 
-      alert("Project successfully deleted!");
+        const docRef = doc(db, 'projects', projectId);
+        await deleteDoc(docRef); 
+        toast({
+            title: "Project Successfully Deleted!",
+            description: "The project has been deleted",
+        })
     } catch (error) {
-      alert("Error deleting project!");
+        toast({
+            title: "Error! Failed to delete!",
+            description: "There was a problem. Pls try again!.",
+        })
     }
   };
 

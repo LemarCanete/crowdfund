@@ -52,13 +52,11 @@ const ReviewForm = ({ projectId }) => {
                 setReviews([{ review, user: { name: currentUser.displayName, photoURL: currentUser.photoURL }, createdAt: new Date() }, ...reviews]);
                 setReview('');
 
-                // window.location.reload();
             } catch (error) {
                
                 alert("Please login to add a review.");
             }
         }
-        // window.location.reload();
     };
 
     return (

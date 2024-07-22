@@ -3,6 +3,12 @@ import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { db } from '@/utils/firebase-config';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+  } from "@/components/ui/avatar"
+import { useRouter } from 'next/navigation';
 
 function ProfilePage() {
   const { currentUser } = useContext(AuthContext);
@@ -10,6 +16,7 @@ function ProfilePage() {
   const [aboutMe, setAboutMe] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [aboutMeText, setAboutMeText] = useState('');
+    const router = useRouter();
 
   useEffect(() => {
     const fetchAboutMe = async () => {
@@ -29,7 +36,9 @@ function ProfilePage() {
     fetchAboutMe();
   }, [currentUser]);
 
-
+  useEffect(()=>{
+    !currentUser.uid && router.push('/')
+  }, [currentUser])
 
   /*useEffect(() => {
     const fetchContributions = async () => {
@@ -78,11 +87,15 @@ function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <div className="flex items-center mb-6">
-        <img
+        {/* <img
           src={currentUser.photoURL || '/default-avatar.png'}
           alt="Profile"
           className="w-20 h-20 rounded-full mr-4"
-        />
+        /> */}
+        {currentUser.uid && <Avatar className='w-20 h-20'>
+            <AvatarImage src={`${currentUser?.photoURL}`} alt="@shadcn" className="h-full w-full mr-4"/>
+            <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
+        </Avatar>}
         <div>
           <h1 className="text-3xl font-bold">{currentUser.displayName || 'Anonymous'}</h1>
           <p className="text-gray-600">Donor</p>
