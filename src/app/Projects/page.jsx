@@ -64,44 +64,9 @@ export default function Projects() {
                     
                     
                     
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="Project4.jpg" alt="Project 4" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Cultural Heritage Preservation</h3>
-                        <p className="mt-2">This Project aims at preserving and promoting the rich cultural heritage of indigenous and 
-                            local communities in the Philippines.This can include supporting traditional crafts, music, and festivals.
-                            </p>
-                            <Progress value={50} className="w-[85%] mt-4" />
-                            <div className="flex flex-row">
-                        <p className="mt-4">Raised:75,000 php</p>
-                        <p className="mt-4 ml-auto">Goal:150,000 php</p>
-                        </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="Project5.jpg" alt="Project 5" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Education for All: Scholarship Fund</h3>
-                        <p className="mt-2">Provide scholarships for underprivileged students in rural areas to access quality education and achieve their academic dreams.
-                            Funds will be used for tuition, school supplies, and transportation.</p>
-                            <Progress value={80} className="w-[85%] mt-4" />
-                            <div className="flex flex-row">
-                        <p className="mt-4">Raised:200,000 php</p>
-                        <p className="mt-4 ml-auto">Goal:250,000 php</p>
-                        </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
-                    <div className="bg-white p-4 rounded shadow-md">
-                        <img src="Project6.jpg" alt="Project 6" className="w-full h-48 object-cover rounded mb-4"/>
-                        <h3 className="text-xl font-bold">Reforestation and Environmental Conservation</h3>
-                        <p className="mt-2">Plant trees and restore degraded forest areas to combat deforestation and promote biodiversity. Funds will support tree planting activities,
-                            community education, and conservation efforts.
-                        </p>
-                        <Progress value={70} className="w-[85%] mt-4" />
-                        <div className="flex flex-row">
-                        <p className="mt-4">Raised:70,000 php</p>
-                        <p className="mt-4 ml-auto">Goal:100,000 php</p>
-                        </div>
-                        <Button className="mt-4">More Details</Button>
-                    </div>
+                   
+                    
+                    
                 </div>
             </section>
             <section>

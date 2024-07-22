@@ -41,7 +41,7 @@ const Navbar = () => {
             <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={100} /></Link>
 
             <div className="flex gap-10 items-center">
-            <Link className={pathname === '/' ? 'text-blue-500' : ''} href='/'>Home</Link>
+            <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
             <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
             <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
             <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
