@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import {
     Card,
@@ -34,10 +34,39 @@ import ReviewForm from '@/components/ReviewForm'
 import Updates from '@/components/Updates'
 import { TbCurrencyPeso } from "react-icons/tb";
 import { format } from 'date-fns';
-import BackerList from '@/components/BackerList'
+import BackerList from '@/components/BackerList';
+import { AuthContext } from '@/context/AuthContext';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase-config"
+
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
+    const { currentUser } = useContext(AuthContext);
+
+    const addBookmark = async (proj) => {
+        try {
+            const docRef = await addDoc(collection(db, "bookmarks"), {
+                title: proj.title,
+                description: proj.description,
+                coverPhoto: proj.coverPhoto,
+                userId: currentUser.uid
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    };
+
+    const handleAddBookmark = async(title, description, coverPhoto) => {
+        const proj = {
+            title: projectDetails.title,
+            description: projectDetails.description,
+            coverPhoto: projectDetails.coverPhoto
+        };
+        await addBookmark(proj);
+    };
+
 
     return (
         <div>
@@ -77,7 +106,7 @@ const Project = ({projectDetails}) => {
                                 </div>
                                 <div className="flex justify-end">
                                     {/* {currentUser.uid && projectDetails.title && <EditProjectDialog projectDetails={projectDetails}/>} */}
-                                    <Toggle><CiBookmark className='text-xl'/></Toggle>
+                                    <Toggle onClick={handleAddBookmark}><CiBookmark className='text-xl'/></Toggle>
                                     <Toggle><CiHeart className='text-xl'/></Toggle>
                                     <Share />
                                     {/* <Toggle><CiFlag1 className='text-xl'/></Toggle> */}
