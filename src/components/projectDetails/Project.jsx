@@ -38,18 +38,17 @@ import BackerList from '@/components/BackerList'
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
-
     return (
         <div>
             <Card className='lg:mx-20 md:mx-28 my-2 '>
                 <CardContent className='p-0'>
                     <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
                         {/* images */}
-                        <div className="m-2 md:grid lg:grid-cols-3 md:grid-cols-2 gap-2">
+                        <div className="m-2">
                             <img src={projectDetails.coverPhoto} alt="" className='rounded-t-lg col-span-3'/>
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-bl-lg '/>
+                            {/* <img src={projectDetails.coverPhoto} alt="" className='rounded-bl-lg '/>
                             <img src={projectDetails.coverPhoto} alt="" className=''/>
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-br-lg'/>
+                            <img src={projectDetails.coverPhoto} alt="" className='rounded-br-lg'/> */}
                         </div>
 
                         {/* details */}
@@ -59,7 +58,7 @@ const Project = ({projectDetails}) => {
                                 <div className="flex gap-4">
                                     <Avatar>
                                         <AvatarImage src={projectDetails.user?.photoURL} alt="@shadcn" />
-                                        <AvatarFallback>{projectDetails.user?.displayName.slice(0, 2)}</AvatarFallback>
+                                        <AvatarFallback>{projectDetails.user?.email.slice(0, 2)}</AvatarFallback>
                                     </Avatar>
                                     <div className="">
                                         <HoverCard>
@@ -88,7 +87,7 @@ const Project = ({projectDetails}) => {
                             <div className="">
                                 <div className="my-2">
                                     <h1 className="text-3xl font-extrabold tracking-wider leading-relaxed">{projectDetails.title}</h1>
-                                    <Badge variant="" className='w-fit h-fit'>{projectDetails.category}</Badge>
+                                    <Badge variant="outline" className='w-fit h-fit'>{projectDetails.category}</Badge>
                                     <p className="text-slate-500 text-sm tracking-wide leading-6 p-2">{projectDetails.description}</p>
                                 </div>
 

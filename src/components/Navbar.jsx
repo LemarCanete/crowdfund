@@ -81,17 +81,9 @@ const Navbar = () => {
                             <DropdownMenuItem onClick={()=> router.push('/MyProjects')}>
                                 <GoProject className="me-2 text-gray-500" /> My Projects
                             </DropdownMenuItem>
-                            <DropdownMenuSub>
-                                <DropdownMenuSubTrigger><FaBookmark className="me-2 text-gray-500"/> Bookmark</DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuItem onClick={()=>router.push('/Bookmark')}>Projects</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={()=>router.push('/BookmarkMessage')}>Message</DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>More...</DropdownMenuItem>
-                                </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                            </DropdownMenuSub>
+                            <DropdownMenuItem onClick={()=> router.push('/Bookmark')}>
+                                <FaBookmark className="me-2 text-gray-500" /> Bookmark
+                            </DropdownMenuItem>
                             {/* <DropdownMenuItem>
                                 <FaPlus className="me-2 text-gray-500"/> Add a Project
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>

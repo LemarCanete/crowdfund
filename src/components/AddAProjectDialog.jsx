@@ -3,7 +3,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -23,7 +23,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { addDays, format } from "date-fns"
-import { DateRange } from "react-day-picker"
+
 import { useToast } from "@/components/ui/use-toast"
 import { Calendar } from "@/components/ui/calendar"
 
@@ -31,17 +31,17 @@ import { Calendar } from "@/components/ui/calendar"
 import { db, storage, auth } from '@/utils/firebase-config'
 import {collection, query, where, getDocs, addDoc, Timestamp} from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { onAuthStateChanged } from 'firebase/auth'
+import { AuthContext } from '@/context/AuthContext'
 
 
 
 const AddAProjectDialog = ({className}) => {
     const { toast } = useToast()
+    const {currentUser} = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
 
     const [open, setOpen] = React.useState(false)
 
-    const [author, setAuthor] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [notes, setNotes] = useState("");
@@ -66,18 +66,6 @@ const AddAProjectDialog = ({className}) => {
         fetchData();
     }, [])
 
-    // get user
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setAuthor(user);
-            } else {
-                setAuthor(null);
-            }
-        });
-        return () => unsubscribe();
-    }, [])
-
     // add project
     const addProject = async() =>{
         try{
@@ -94,20 +82,23 @@ const AddAProjectDialog = ({className}) => {
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now(),
                 coverPhoto: file,
-                author: author.uid
+                author: currentUser.uid
                 });
             toast({
                 title: "Success",
                 description: `Successfully added ${title} in projects`
                 })
         }catch(err){
-            console.log(err)
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "Pls try again!",
+                })
         }
     }
 
     const [date, setDate] = useState({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
+        from: new Date(),
+        to: addDays(new Date(), 20),
     })
 
     const handleUpload = async () => {
@@ -126,12 +117,11 @@ const AddAProjectDialog = ({className}) => {
         return null;
     };
 
-    console.log(author)
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="mt-4"><FaPlus className="me-2"/> Add a Project</Button>
+                <Button className=""><FaPlus className="me-2"/> Add a Project</Button>
             </DialogTrigger>
             <DialogContent className="min-w-[1000]">
                 <DialogHeader>
@@ -239,7 +229,7 @@ const AddAProjectDialog = ({className}) => {
                                 <Calendar
                                     initialFocus
                                     mode="range"
-                                    defaultMonth={date?.from}
+                                    defaultMonth={date.from}
                                     selected={date}
                                     onSelect={setDate}
                                     numberOfMonths={2}
