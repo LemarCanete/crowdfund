@@ -70,7 +70,7 @@ export default function Home() {
                     </div>
                     <div className="p-6 bg-white rounded shadow-md">
                         <img src="/member4.jpg" alt="Team Member 4" className="w-32 h-32 mx-auto rounded-full mb-4"/>
-                        <h3 className="text-xl font-bold">Cyrel Joy Sasan</h3>
+                        <h3 className="text-xl font-bold">Cyrel Joy <br />Sasan</h3>
                         <p className="mt-2">Frontend Developer</p>
                     </div>
                     <div className="p-6 bg-white rounded shadow-md">
