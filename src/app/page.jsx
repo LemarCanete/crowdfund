@@ -54,7 +54,7 @@
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8"> 
         <div className="p-6 bg-white rounded shadow-md">
             <img src="/member1.jpg" alt="Team Member 1" className="w-32 h-32 mx-auto rounded-full mb-4"/>
-            <h3 className="text-xl font-bold">Lemar Cañete</h3>
+            <h3 className="text-xl font-bold">Lemar <br />Cañete</h3>
             <p className="mt-2">Full Stack Developer</p>
         </div>
         <div className="p-6 bg-white rounded shadow-md">
