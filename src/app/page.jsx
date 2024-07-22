@@ -6,7 +6,7 @@ export default function Home() {
     const router = useRouter();
 
     return (
-        <main className="container mx-auto p-4">         
+        <main className="container mx-auto p-0 m-0">         
             <header className="text-center">
                 <img src="/logo transparent.png" alt="CrowdFund Project Logo" className="mx-auto mb-4 w-96 h-auto"/>
                 <p className="mt-2 text-lg">Join us in supporting innovative projects and making dreams come true.</p>
