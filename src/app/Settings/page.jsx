@@ -16,6 +16,7 @@ import VerifyAccount from "@/components/settings/VerifyAccount";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from '@/utils/firebase-config';
 import { AuthContext } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
     const { currentUser } = useContext(AuthContext);
@@ -25,6 +26,10 @@ const Page = () => {
     const [location, setLocation] = useState("");
     const [contactNo, setContactNo] = useState("");
     const [message, setMessage] = useState("");
+    const router = useRouter()
+    useEffect(()=>{
+        !currentUser.uid && router.push('/')
+      }, [currentUser])
 
     useEffect(() => {
         console.log(currentUser);

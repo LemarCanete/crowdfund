@@ -36,6 +36,8 @@ const Navbar = () => {
     const pathname = usePathname();
     const {currentUser} = useContext(AuthContext)
 
+    if(pathname === '/') return false
+
     return (
         <nav className='flex justify-between p-5'>
             <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={100} /></Link>
@@ -55,7 +57,7 @@ const Navbar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='cursor-pointer'>
                             <Avatar>
-                                <AvatarImage src={`${currentUser.photoURL && currentUser.photoURL}`} alt="@shadcn" />
+                                <AvatarImage src={`${currentUser?.photoURL}`} alt="@shadcn" />
                                 <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>

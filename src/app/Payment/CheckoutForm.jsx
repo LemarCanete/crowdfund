@@ -17,14 +17,15 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { CiCircleInfo } from "react-icons/ci";
+import { useToast } from "@/components/ui/use-toast"
 
-  
 export default function CheckoutForm({cash, setCash, addDonate, projectDetails, note, setNote, setIsPrivate, isPrivate}) {
     const stripe = useStripe();
     const elements = useElements();
 
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { toast } = useToast()
 
     useEffect(() => {
         if (!stripe) {
@@ -90,16 +91,17 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
             console.log("PaymentIntent status:", paymentIntent.status);
     
             if (paymentIntent.status === "succeeded") {
-                alert("Success");
                 await addDonate();
                 setMessage("Payment succeeded!");
 
-                // Manually redirect after showing the alert
-                window.location.reload()
             } else {
                 setMessage("Something went wrong.");
             }
         } catch (error) {
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was an error with your donation. Pls try again",
+            })
             console.error("Error during payment submission:", error);
             setMessage("An error occurred. Please try again.");
         }

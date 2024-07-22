@@ -46,6 +46,7 @@ import { IoClose } from 'react-icons/io5'
 import { GoImage, GoPaperclip } from 'react-icons/go'
 import { Separator } from '@/components/ui/separator'
 import { deleteDoc } from "firebase/firestore";
+import { useToast } from "@/components/ui/use-toast"
 
 const Updates = ({projectDetails}) => {
     const [title, setTitle] = useState('')
@@ -54,6 +55,7 @@ const Updates = ({projectDetails}) => {
     const [files, setFiles] = useState([]);
     const {currentUser} = useContext(AuthContext);
     const [updates, setUpdates] = useState([]);
+    const { toast } = useToast()
 
     useEffect(()=>{
         const fetchData = async () =>{
@@ -142,12 +144,20 @@ const Updates = ({projectDetails}) => {
                 updatedAt: Timestamp.now(),
             });
             
+            toast({
+                title: `Update Successful`,
+                description: "Successfully added  ${title} as update",
+              })
+
             setImages([]);
             setTitle("");
             setDescription("");
             setFiles([])
         }catch(err){
-            console.log(err.message)
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem adding an update. Pls try again",
+              })
         }
     }
 
@@ -181,7 +191,16 @@ const Updates = ({projectDetails}) => {
                 })
             }
             await deleteDoc(doc(db, "updates", id));
+
+            toast({
+                title: `Successfully deleted update`,
+                description: "There was a problem with your request.",
+              })
         }catch(err){
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem adding an update. Pls try again",
+            })
             console.log(err.message)
         }
     }

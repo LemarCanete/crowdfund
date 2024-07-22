@@ -12,6 +12,7 @@ import { collection, addDoc, Timestamp, onSnapshot } from "firebase/firestore";
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/utils/firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useToast } from "@/components/ui/use-toast"
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -26,6 +27,7 @@ export default function Page({params}) {
     const {currentUser} = useContext(AuthContext)
     const router = useRouter()
     const [projectDetails, setProjectDetails] = useState([])
+    const { toast } = useToast()
 
     const projectId = params.payment
 
@@ -80,6 +82,11 @@ export default function Page({params}) {
                 message: note,
             });
 
+            toast({
+                title: `Donation Successful`,
+                description: `Successfully donated ${cash}`,
+              })
+            
             // update project raisedAmount
             const projectRef = doc(db, "projects", projectId);
             // Set the "capital" field of the city 'DC'
@@ -88,13 +95,17 @@ export default function Page({params}) {
                 updatedAt: Timestamp.now()
             });
 
-            console.log("Document written with ID: ", docRef.id);
+            window.location.reload()
+
+
         }catch(err){
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was an error with your donation. Pls try again",
+            })
             console.log(err.message);
         }
     }
-
-    console.log(projectDetails)
 
     return (
         <div className="w-screen">
