@@ -235,6 +235,11 @@ const SocialPage = () => {
                         </div>
                     ))}
                 </div>
+                <div style={{ position: 'absolute', bottom: '100px', right: '20px', textAlign: 'right', color: '#fff' }}>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Your support fuels our mission</h2>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Every contribution brings us closer</h2>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>To reaching our goal and making a difference</h2>
+                </div>
             </div>
         </div>
     );
