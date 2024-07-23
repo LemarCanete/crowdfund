@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -13,10 +13,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import VerifyAccount from "@/components/settings/VerifyAccount";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from '@/utils/firebase-config';
 import { AuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { fetchUserData, saveUserData } from './pagebackend';
 
 const Page = () => {
     const { currentUser } = useContext(AuthContext);
@@ -26,54 +25,45 @@ const Page = () => {
     const [location, setLocation] = useState("");
     const [contactNo, setContactNo] = useState("");
     const [message, setMessage] = useState("");
-    const router = useRouter()
-    useEffect(()=>{
-        !currentUser.uid && router.push('/')
-      }, [currentUser])
+    const router = useRouter();
 
     useEffect(() => {
-        console.log(currentUser);
+        if (!currentUser?.uid) {
+            router.push('/');
+        }
+    }, [currentUser, router]);
 
+    useEffect(() => {
         if (currentUser) {
-            const fetchUserData = async () => {
-                const docRef = doc(db, 'users', currentUser.uid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    setName(data.name);
-                    setUsername(data.username);
-                    setEmail(data.email);
-                    setLocation(data.location);
-                    setContactNo(data.contactNo);
+            const fetchData = async () => {
+                console.log("Fetching data for user:", currentUser.uid);
+                const data = await fetchUserData(currentUser.uid);
+                if (data) {
+                    setName(data.displayName || "");
+                    setUsername(data.username || "");
+                    setEmail(data.email || "");
+                    setLocation(data.location || "");
+                    setContactNo(data.phoneNumber || "");
+                    console.log("Fetched user data:", data);
                 } else {
-                    console.log("No such document!");
+                    console.log("No user data found.");
                 }
             };
-
-            fetchUserData();
-        } else {
-            console.log("No user is signed in.");
+            fetchData();
         }
     }, [currentUser]);
 
     const handleSaveChanges = async () => {
         if (currentUser) {
-            try {
-                const docRef = doc(db, 'users', currentUser.uid);
-                await setDoc(docRef, {
-                    name,
-                    username,
-                    email,
-                    location,
-                    contactNo
-                });
-                setMessage("Changes Saved");
-                setTimeout(() => setMessage(""), 3000);
-                console.log("Document successfully written!");
-            } catch (e) {
-                console.error("Error writing document: ", e);
-            }
+            await saveUserData(currentUser.uid, {
+                displayName: name,
+                username,
+                email,
+                location,
+                phoneNumber: contactNo
+            });
+            setMessage("Changes Saved");
+            setTimeout(() => setMessage(""), 3000);
         } else {
             console.error("No user is signed in.");
         }
@@ -105,16 +95,16 @@ const Page = () => {
                                 <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="email address">Email Address</Label>
-                                <Input id="email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <Label htmlFor="email">Email Address</Label>
+                                <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="location">Location</Label>
                                 <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="contact no.">Contact No.</Label>
-                                <Input id="contact no." value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+                                <Label htmlFor="contactNo">Contact No.</Label>
+                                <Input id="contactNo" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
                             </div>
                         </CardContent>
                         <CardFooter>
