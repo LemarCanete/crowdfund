@@ -17,7 +17,7 @@ import { FcGoogle } from "react-icons/fc";
 // auth
 import {getAuth, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, browserLocalPersistence } from 'firebase/auth'
 import { db, provider } from '@/utils/firebase-config'
-import { addDoc, collection, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { useToast } from "@/components/ui/use-toast"
 
 const page = () => {
@@ -69,18 +69,25 @@ const page = () => {
     const signInGoogle = () =>{
         signInWithPopup(auth, provider)
         .then(async(result) => {
-            const docRef = await addDoc(collection(db, "users"), {
-                uid: result.user.uid,
-                displayName: result.user.displayName,
-                email: result.user.email,
-                isVerified: false,
-                phoneNumber: result.user.phoneNumber,
-                photoURL: result.user.photoURL,
-                bio: '',
-                username: '',
-                location: ''
-              });
-              toast({
+
+            const docRef = doc(db, "users", result.user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                const docRef = await setDoc(doc(db, "users", result.user.uid), {
+                    uid: result.user.uid,
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    isVerified: false,
+                    phoneNumber: result.user.phoneNumber,
+                    photoURL: result.user.photoURL,
+                    bio: '',
+                    username: '',
+                    location: ''
+                });
+            } 
+
+            toast({
                 title: "Successfully Loggedin",
                 description: "Welcome user",
             })

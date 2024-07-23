@@ -13,68 +13,78 @@ import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import VerifyAccount from "@/components/settings/VerifyAccount";
+import ChangeEmail from "@/components/settings/ChangeEmail";
+import ChangePassword from "@/components/settings/ChangePassword";
 import { AuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { fetchUserData, saveUserData } from './pagebackend';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useToast } from "@/components/ui/use-toast"
+import { auth, db } from '@/utils/firebase-config';
+import { updateEmail, updateProfile } from 'firebase/auth';
 
 const Page = () => {
     const { currentUser } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [location, setLocation] = useState("");
     const [contactNo, setContactNo] = useState("");
     const [message, setMessage] = useState("");
-    const router = useRouter();
 
-    useEffect(() => {
-        if (!currentUser?.uid) {
-            router.push('/');
-        }
-    }, [currentUser, router]);
+    const router = useRouter();
+    const { toast } = useToast()
+
+    // useEffect(() => {
+    //     if (!currentUser.uid) {
+    //         router.push('/');
+    //     }
+    // }, [currentUser]);
 
     useEffect(() => {
         if (currentUser) {
-            const fetchData = async () => {
-                console.log("Fetching data for user:", currentUser.uid);
-                const data = await fetchUserData(currentUser.uid);
-                if (data) {
-                    setName(data.displayName || "");
-                    setUsername(data.username || "");
-                    setEmail(data.email || "");
-                    setLocation(data.location || "");
-                    setContactNo(data.phoneNumber || "");
-                    console.log("Fetched user data:", data);
-                } else {
-                    console.log("No user data found.");
-                }
-            };
-            fetchData();
+            setName(currentUser.displayName || "");
+            setUsername(currentUser.username || "");
+            setLocation(currentUser.location || "");
+            setContactNo(currentUser.phoneNumber || "");
         }
     }, [currentUser]);
 
     const handleSaveChanges = async () => {
-        if (currentUser) {
-            await saveUserData(currentUser.uid, {
-                displayName: name,
-                username,
-                email,
-                location,
-                phoneNumber: contactNo
+        try {
+            const docRef = doc(db, 'users', currentUser.uid);
+            await updateDoc(docRef, {
+                name: name,
+                username: username,
+                location: location,
+                contactNo: contactNo,
             });
-            setMessage("Changes Saved");
-            setTimeout(() => setMessage(""), 3000);
-        } else {
-            console.error("No user is signed in.");
+
+            await updateProfile(auth.currentUser, {
+                displayName: name
+            })
+
+            toast({
+                title: "Your account has been updated successfully",
+                description: "The changes you have made to your profile has been updated successfully",
+            })
+        } catch (error) {
+            console.error("Error writing document:", error);
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with updating your profile. Pls try again",
+            })
         }
     };
 
+    console.log(currentUser)
+
     return (
         <div className='flex justify-center'>
-            <Tabs defaultValue="account" className="w-[800px]">
-                <TabsList className="grid w-full grid-cols-3">
+            <Tabs defaultValue="account" className="w-[900px]">
+                <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="account">Account</TabsTrigger>
-                    <TabsTrigger value="password">Password</TabsTrigger>
+                    <TabsTrigger value="changeEmail">Change Email</TabsTrigger>
+                    <TabsTrigger value="changePassword">Change Password</TabsTrigger>
                     <TabsTrigger value="verifyAccount">Verify Account</TabsTrigger>
                 </TabsList>
                 <TabsContent value="account">
@@ -95,10 +105,6 @@ const Page = () => {
                                 <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                             <div className="space-y-1">
-                                <Label htmlFor="email">Email Address</Label>
-                                <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-                            <div className="space-y-1">
                                 <Label htmlFor="location">Location</Label>
                                 <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
                             </div>
@@ -113,28 +119,11 @@ const Page = () => {
                         </CardFooter>
                     </Card>
                 </TabsContent>
-                <TabsContent value="password">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Password</CardTitle>
-                            <CardDescription>
-                                Change your password here. After saving, you'll be logged out.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            <div className="space-y-1">
-                                <Label htmlFor="current">Current password</Label>
-                                <Input id="current" type="password" />
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="new">New password</Label>
-                                <Input id="new" type="password" />
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Button>Save password</Button>
-                        </CardFooter>
-                    </Card>
+                <TabsContent value="changeEmail">
+                    <ChangeEmail />
+                </TabsContent>
+                <TabsContent value="changePassword">
+                    <ChangePassword />
                 </TabsContent>
                 <TabsContent value="verifyAccount">
                     <VerifyAccount />

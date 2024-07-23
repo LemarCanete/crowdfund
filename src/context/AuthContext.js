@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-
+        console.log(user)
         const q = query(collection(db, "users"), where("uid", "==", user.uid));
 
         const querySnapshot = await getDocs(q);
@@ -24,10 +24,12 @@ export const AuthContextProvider = ({ children }) => {
 
         const userData = userDetails[0]
 
-        if (user) {
-          setCurrentUser({ ...user, ...userData[0] });
+        if (userData) {
+            console.log("firestore added")
+          setCurrentUser({ ...userData, ...user });
         } else {
-          setCurrentUser(user);
+            console.log("no firestore added")
+            setCurrentUser(user);
         }
       } else {
         // If the user is logged out, you might want to reset the currentUser
@@ -39,8 +41,6 @@ export const AuthContextProvider = ({ children }) => {
       unsub();
     };
   }, []);
-  console.log(currentUser)
-
 
   return (
     <AuthContext.Provider value={{ currentUser }}>

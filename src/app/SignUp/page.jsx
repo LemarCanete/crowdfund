@@ -16,7 +16,8 @@ import { FcGoogle } from "react-icons/fc";
 import {createUserWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
 import {auth, db, provider} from '@/utils/firebase-config'
 import { useRouter } from 'next/navigation'
-import { addDoc, collection, doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { addDoc, doc, getDoc, setDoc } from "firebase/firestore"; 
 import { useToast } from "@/components/ui/use-toast"
 
 const page = () => {
@@ -30,7 +31,7 @@ const page = () => {
             // Signed up 
             const user = userCredential.user;
             console.log(user.uid)
-            const docRef = await addDoc(collection(db, "users"), {
+            const docRef = await setDoc(doc(db, "users", user.uid), {
                 uid: user.uid,
                 displayName: user.displayName,
                 email: user.email,
@@ -60,17 +61,23 @@ const page = () => {
     const signUpGoogle = () =>{
         signInWithPopup(auth, provider)
         .then(async(result) => {
-            const docRef = await addDoc(collection(db, "users"), {
-                uid: result.user.uid,
-                displayName: result.user.displayName,
-                email: result.user.email,
-                isVerified: false,
-                phoneNumber: result.user.phoneNumber,
-                photoURL: result.user.photoURL,
-                bio: '',
-                username: '',
-                location: ''
-              });
+            const docRef = doc(db, "users", result.user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                const docRef = await setDoc(doc(db, "users", result.user.uid), {
+                    uid: result.user.uid,
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    isVerified: false,
+                    phoneNumber: result.user.phoneNumber,
+                    photoURL: result.user.photoURL,
+                    bio: '',
+                    username: '',
+                    location: ''
+                });
+            } 
+
             toast({
                 title: "Successfully Loggedin",
                 description: "Welcome user",
@@ -85,11 +92,33 @@ const page = () => {
           });
     }
 
+    const checkIfEmailExist = async(email) =>{
+
+        const q = query(collection(db, "users"), where("email", "==", email));
+
+        const querySnapshot = await getDocs(q);
+        const user = []
+        querySnapshot.forEach((doc) => {
+            user.push(doc.id)
+        });
+
+        if(user.length > 0){
+            return true
+        }else{
+            return false
+        }
+    }
+
     return (
         <div className='w-full'>
             <Formik initialValues={{ email: '', password: '', confirmPassword: '' }}
-                validate={values => {
+                validate={async(values) => {
                     const errors = {};
+                    const emailExist = await checkIfEmailExist(values.email)
+                    console.log(emailExist)
+                    if(emailExist){
+                        errors.email = 'Email already exist';
+                    } 
                     if (!values.email) {
                         errors.email = 'Required';
                     } else if ( !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
