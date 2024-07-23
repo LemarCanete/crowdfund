@@ -1,9 +1,12 @@
-"use client"; // Add this directive to indicate that this is a client component
-
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+import { db } from '@/utils/firebase-config';
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaGoogle, FaTiktok } from 'react-icons/fa';
 
 const SocialPage = () => {
+    const { currentUser } = useContext(AuthContext);
     const [socialLinks, setSocialLinks] = useState({
         instagram: '',
         twitter: '',
@@ -12,6 +15,32 @@ const SocialPage = () => {
         google: '',
         tiktok: '',
     });
+    const [editMode, setEditMode] = useState({
+        instagram: true,
+        twitter: true,
+        facebook: true,
+        youtube: true,
+        google: true,
+        tiktok: true,
+    });
+
+    useEffect(() => {
+        const fetchSocialLinks = async () => {
+            if (currentUser) {
+                try {
+                    const userDocRef = doc(db, 'socialLinks', currentUser.uid);
+                    const userSnapshot = await getDoc(userDocRef);
+                    if (userSnapshot.exists()) {
+                        setSocialLinks(userSnapshot.data().socialLinks || {});
+                    }
+                } catch (error) {
+                    console.error('Error fetching social links:', error);
+                }
+            }
+        };
+
+        fetchSocialLinks();
+    }, [currentUser]);
 
     const handleInputChange = (event, key) => {
         setSocialLinks({
@@ -20,29 +49,119 @@ const SocialPage = () => {
         });
     };
 
+    const toggleEditMode = (key) => {
+        setEditMode({
+            ...editMode,
+            [key]: !editMode[key],
+        });
+    };
+
     const handleIconClick = (url) => {
         if (url) {
             window.location.href = url;
         } else {
-            alert("No link provided. Please add a link first.");
+            alert('No link provided. Please add a link first.');
         }
     };
 
-    const handleClear = () => {
-        setSocialLinks({
-            instagram: '',
-            twitter: '',
-            facebook: '',
-            youtube: '',
-            google: '',
-            tiktok: '',
-        });
+    const validateUrl = (url, platform) => {
+        const patterns = {
+            facebook: /^https?:\/\/(www\.)?facebook\.com\/.+$/,
+            instagram: /^https?:\/\/(www\.)?instagram\.com\/.+$/,
+            twitter: /^https?:\/\/(www\.)?twitter\.com\/.+$/,
+            youtube: /^https?:\/\/(www\.)?youtube\.com\/.+$/,
+            google: /^https?:\/\/(www\.)?google\.com\/.+$/,
+            tiktok: /^https?:\/\/(www\.)?tiktok\.com\/.+$/,
+        };
+
+        return patterns[platform].test(url);
     };
 
-    const handleSubmit = () => {
-        // Here you can implement the submit functionality, e.g., sending data to a server
-        console.log("Submitting social links:", socialLinks);
-        alert("Social links submitted!");
+    const validateLinks = (links) => {
+        for (const [key, url] of Object.entries(links)) {
+            if (url && !validateUrl(url, key)) {
+                alert(`The ${key.charAt(0).toUpperCase() + key.slice(1)} link is invalid. Please ensure it is a valid ${key} URL.`);
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const handleSave = async (key) => {
+        if (currentUser) {
+            if (!validateLinks(socialLinks)) {
+                return; // Stop if validation fails
+            }
+            try {
+                const userDocRef = doc(db, 'socialLinks', currentUser.uid);
+                const userSnapshot = await getDoc(userDocRef);
+                if (userSnapshot.exists()) {
+                    await updateDoc(userDocRef, {
+                        socialLinks: {
+                            ...socialLinks,
+                        },
+                    });
+                } else {
+                    await setDoc(userDocRef, {
+                        socialLinks,
+                    });
+                }
+                toggleEditMode(key);
+                alert('Social link updated successfully');
+            } catch (error) {
+                alert('Error updating social link');
+            }
+        }
+    };
+
+    const handleClear = async () => {
+        if (currentUser) {
+            try {
+                // Clear the social links in the state
+                setSocialLinks({
+                    instagram: '',
+                    twitter: '',
+                    facebook: '',
+                    youtube: '',
+                    google: '',
+                    tiktok: '',
+                });
+
+                // Update the Firestore document to remove all social links
+                const userDocRef = doc(db, 'socialLinks', currentUser.uid);
+                await updateDoc(userDocRef, {
+                    socialLinks: {
+                        instagram: '',
+                        twitter: '',
+                        facebook: '',
+                        youtube: '',
+                        google: '',
+                        tiktok: '',
+                    },
+                });
+                
+                alert('All social links cleared successfully');
+            } catch (error) {
+                alert('Error clearing social links');
+            }
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (currentUser) {
+            if (!validateLinks(socialLinks)) {
+                return; // Stop if validation fails
+            }
+            try {
+                const userDocRef = doc(db, 'socialLinks', currentUser.uid);
+                await setDoc(userDocRef, {
+                    socialLinks,
+                });
+                alert('Social links submitted successfully');
+            } catch (error) {
+                alert('Error submitting social links');
+            }
+        }
     };
 
     return (
@@ -57,13 +176,30 @@ const SocialPage = () => {
                         {key === 'youtube' && <FaYoutube size={30} />}
                         {key === 'google' && <FaGoogle size={30} />}
                         {key === 'tiktok' && <FaTiktok size={30} />}
-                        <input
-                            type="text"
-                            placeholder={`Enter ${key} link`}
-                            value={socialLinks[key]}
-                            onChange={(e) => handleInputChange(e, key)}
-                            style={{ flex: 1, padding: '5px' }}
-                        />
+                        {editMode[key] ? (
+                            <input
+                                type="text"
+                                placeholder={`Enter ${key} link`}
+                                value={socialLinks[key]}
+                                onChange={(e) => handleInputChange(e, key)}
+                                style={{ flex: 1, padding: '5px' }}
+                            />
+                        ) : (
+                            <button
+                                onClick={() => toggleEditMode(key)}
+                                style={{ flex: 1, padding: '5px', backgroundColor: '#f0f0f0', border: '1px solid #ccc', cursor: 'pointer' }}
+                            >
+                                Edit {key.charAt(0).toUpperCase() + key.slice(1)} Link
+                            </button>
+                        )}
+                        {!editMode[key] && (
+                            <button
+                                onClick={() => handleSave(key)}
+                                style={{ marginLeft: '10px', padding: '5px', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '4px' }}
+                            >
+                                Save
+                            </button>
+                        )}
                     </div>
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
@@ -95,15 +231,9 @@ const SocialPage = () => {
                             {key === 'facebook' && <FaFacebook size={40} color="#4267B2" />}
                             {key === 'youtube' && <FaYoutube size={40} color="#FF0000" />}
                             {key === 'google' && <FaGoogle size={40} color="#4285F4" />}
-                            {key === 'tiktok' && <FaTiktok size={40} color="#FF2048" />}
-                            <span style={{ marginTop: '10px', fontWeight: 'bold' }}>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                            {key === 'tiktok' && <FaTiktok size={40} color="#000" />}
                         </div>
                     ))}
-                </div>
-                <div style={{ position: 'absolute', bottom: '100px', right: '20px', textAlign: 'right', color: '#fff' }}>
-                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Your support fuels our mission</h2>
-                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Every contribution brings us closer</h2>
-                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>To reaching our goal and making a difference</h2>
                 </div>
             </div>
         </div>
