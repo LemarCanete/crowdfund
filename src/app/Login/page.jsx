@@ -15,25 +15,45 @@ import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 
 // auth
-import {sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth, db, provider } from '@/utils/firebase-config'
+import {getAuth, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, browserLocalPersistence } from 'firebase/auth'
+import { db, provider } from '@/utils/firebase-config'
 import { addDoc, collection, setDoc } from 'firebase/firestore'
+import { useToast } from "@/components/ui/use-toast"
 
 const page = () => {
-    const router = useRouter('/')
+    const router = useRouter()
+    const { toast } = useToast()
 
+    const auth = getAuth();
     const signIn = (email, password) =>{
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log('signed in', user)
-            router.push('/')
-            return true
+        setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                toast({
+                    title: "Successfully Loggedin",
+                    description: "Welcome user",
+                })
+                router.push('/')
+                return true
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                toast({
+                    title: "Uh oh! Something went wrong.",
+                    description: "Pls try again!",
+                })
+                return false
+            });
         })
         .catch((error) => {
+            // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
+            
             return false
         });
     }
@@ -47,7 +67,6 @@ const page = () => {
     }
 
     const signInGoogle = () =>{
-        console.log('unsa na ni')
         signInWithPopup(auth, provider)
         .then(async(result) => {
             const docRef = await addDoc(collection(db, "users"), {
@@ -61,9 +80,17 @@ const page = () => {
                 username: '',
                 location: ''
               });
+              toast({
+                title: "Successfully Loggedin",
+                description: "Welcome user",
+            })
             router.push('/')
           }).catch((error) => {
                 console.log(error.message)
+                toast({
+                    title: "Uh oh! Something went wrong.",
+                    description: "Pls try again!",
+                })
           });
     }
 
@@ -83,7 +110,7 @@ const page = () => {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     const signedIn = signIn(values.email, values.password)
-                    signedIn && setSubmitting(false)
+                    setSubmitting(false)
                 }}
                 >
                 {({

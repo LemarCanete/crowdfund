@@ -35,14 +35,15 @@ const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
     const {currentUser} = useContext(AuthContext)
-    console.log(currentUser)
+
+    if(pathname === '/') return false
 
     return (
         <nav className='flex justify-between p-5'>
-            <Link href="/" className="text-2xl">LOGO</Link>
+            <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={100} /></Link>
 
             <div className="flex gap-10 items-center">
-            <Link className={pathname === '/' ? 'text-blue-500' : ''} href='/'>Home</Link>
+            <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
             <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
             <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
             <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
@@ -56,7 +57,7 @@ const Navbar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className='cursor-pointer'>
                             <Avatar>
-                                <AvatarImage src={`${currentUser.photoURL && currentUser.photoURL}`} alt="@shadcn" />
+                                <AvatarImage src={`${currentUser?.photoURL}`} alt="@shadcn" />
                                 <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
@@ -82,17 +83,9 @@ const Navbar = () => {
                             <DropdownMenuItem onClick={()=> router.push('/MyProjects')}>
                                 <GoProject className="me-2 text-gray-500" /> My Projects
                             </DropdownMenuItem>
-                            <DropdownMenuSub>
-                                <DropdownMenuSubTrigger><FaBookmark className="me-2 text-gray-500"/> Bookmark</DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuItem onClick={()=>router.push('/Bookmark')}>Projects</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={()=>router.push('/BookmarkMessage')}>Message</DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>More...</DropdownMenuItem>
-                                </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                            </DropdownMenuSub>
+                            <DropdownMenuItem onClick={()=> router.push('/Bookmark')}>
+                                <FaBookmark className="me-2 text-gray-500" /> Bookmark
+                            </DropdownMenuItem>
                             {/* <DropdownMenuItem>
                                 <FaPlus className="me-2 text-gray-500"/> Add a Project
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>

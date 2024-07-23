@@ -14,13 +14,16 @@ import { FcGoogle } from "react-icons/fc";
 
 // auth
 import {createUserWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
-import {auth, provider} from '@/utils/firebase-config'
+import {auth, db, provider} from '@/utils/firebase-config'
 import { useRouter } from 'next/navigation'
-import { addDoc, doc, setDoc } from "firebase/firestore"; 
+import { addDoc, collection, doc, setDoc } from "firebase/firestore"; 
+import { useToast } from "@/components/ui/use-toast"
 
 const page = () => {
     const [userType, setUserType] = useState('');
     const router = useRouter()
+    const { toast } = useToast()
+
     const addUserAuth = (email, password)=>{
         createUserWithEmailAndPassword(auth, email, password)
         .then(async(userCredential) => {
@@ -38,11 +41,19 @@ const page = () => {
                 username: '',
                 location: ''
               });
+              toast({
+                title: "Successfully Loggedin",
+                description: "Welcome user",
+            })
             router.push('/')
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "Pls try again!",
+            })
         });
     }
 
@@ -60,10 +71,17 @@ const page = () => {
                 username: '',
                 location: ''
               });
-                console.log("Document written with ID: ", docRef.id);
+            toast({
+                title: "Successfully Loggedin",
+                description: "Welcome user",
+            })
                 router.push('/')
           }).catch((error) => {
                 console.log(error.message)
+                toast({
+                    title: "Uh oh! Something went wrong.",
+                    description: "Pls try again!",
+                })
           });
     }
 

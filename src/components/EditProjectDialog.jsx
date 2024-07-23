@@ -3,8 +3,8 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { useContext, useEffect, useState } from 'react'
-import { FaPlus } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react'
+import { FaEdit, FaPlus, FaRegEdit, FaUserEdit } from 'react-icons/fa'
 import { Textarea } from '@/components/ui/textarea'
 import {
     Command,
@@ -23,7 +23,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { addDays, format } from "date-fns"
-
+import { DateRange } from "react-day-picker"
 import { useToast } from "@/components/ui/use-toast"
 import { Calendar } from "@/components/ui/calendar"
 
@@ -31,24 +31,25 @@ import { Calendar } from "@/components/ui/calendar"
 import { db, storage, auth } from '@/utils/firebase-config'
 import {collection, query, where, getDocs, addDoc, Timestamp} from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { AuthContext } from '@/context/AuthContext'
+import { onAuthStateChanged } from 'firebase/auth'
+import { CiEdit } from 'react-icons/ci'
 
 
 
-const AddAProjectDialog = ({className}) => {
+const EditProjectDialog = ({className, projectDetails}) => {
     const { toast } = useToast()
-    const {currentUser} = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
 
     const [open, setOpen] = React.useState(false)
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [notes, setNotes] = useState("");
-    const [category, setCategory] = useState("");
-    const [targetAmount, setTargetAmount] = useState(0);
-    const [raisedAmount, setRaisedAmount] = useState(0);
-    const [status, setStatus] = useState("Preparation");
+    const [author, setAuthor] = useState(projectDetails.author);
+    const [title, setTitle] = useState(projectDetails.title);
+    const [description, setDescription] = useState(projectDetails.description);
+    const [notes, setNotes] = useState(projectDetails.notes);
+    const [category, setCategory] = useState(projectDetails.category);
+    const [targetAmount, setTargetAmount] = useState(projectDetails.targetAmount);
+    const [raisedAmount, setRaisedAmount] = useState(projectDetails.raisedAmount);
+    const [status, setStatus] = useState(projectDetails.status);
     const [coverPhoto, setCoverPhoto] = useState();
     useEffect(()=>{
         // get categories api
@@ -64,6 +65,18 @@ const AddAProjectDialog = ({className}) => {
             setCategories(prev => arr)
         }
         fetchData();
+    }, [])
+
+    // get user
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setAuthor(user);
+            } else {
+                setAuthor(null);
+            }
+        });
+        return () => unsubscribe();
     }, [])
 
     // add project
@@ -82,23 +95,20 @@ const AddAProjectDialog = ({className}) => {
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now(),
                 coverPhoto: file,
-                author: currentUser.uid
+                author: author.uid
                 });
             toast({
                 title: "Success",
                 description: `Successfully added ${title} in projects`
                 })
         }catch(err){
-            toast({
-                title: "Uh oh! Something went wrong.",
-                description: "Pls try again!",
-                })
+            console.log(err)
         }
     }
 
     const [date, setDate] = useState({
-        from: new Date(),
-        to: addDays(new Date(), 20),
+        from: new Date(2022, 0, 20),
+        to: addDays(new Date(2022, 0, 20), 20),
     })
 
     const handleUpload = async () => {
@@ -117,17 +127,21 @@ const AddAProjectDialog = ({className}) => {
         return null;
     };
 
+    console.log(projectDetails)
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className=""><FaPlus className="me-2"/> Add a Project</Button>
+                <Button className=" flex items-center gap-2" variant="secondary">
+                    <CiEdit className='text-lg'/>
+                        <span className='text-sm'>EDIT PROJECT</span>
+                </Button>
             </DialogTrigger>
             <DialogContent className="min-w-[1000]">
                 <DialogHeader>
-                <DialogTitle>Add a Project</DialogTitle>
+                <DialogTitle>Edit Project</DialogTitle>
                 <DialogDescription>
-                    Fill out the form to add a Project. Then click submit
+                    Fill out the form to edit Project. Then click submit
                 </DialogDescription>
                 </DialogHeader>
                     <div className="grid gap-4 py-4">
@@ -229,7 +243,7 @@ const AddAProjectDialog = ({className}) => {
                                 <Calendar
                                     initialFocus
                                     mode="range"
-                                    defaultMonth={date.from}
+                                    defaultMonth={date?.from}
                                     selected={date}
                                     onSelect={setDate}
                                     numberOfMonths={2}
@@ -263,11 +277,11 @@ const AddAProjectDialog = ({className}) => {
                         </div>
                     </div>
                 <DialogFooter>
-                    <DialogClose asChild><Button type="submit" onClick={addProject}>Add Project</Button></DialogClose>
+                    <DialogClose asChild><Button type="submit" onClick={addProject}>Edit Project</Button></DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
     )
 }
 
-export default AddAProjectDialog
+export default EditProjectDialog
