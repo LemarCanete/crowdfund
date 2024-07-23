@@ -67,7 +67,7 @@ const DonationLogs = ({projectDetails}) => {
 
     return (
         <Table>
-            <TableCaption>A list of recent donations.</TableCaption>
+            <TableCaption>A list of donations for this project.</TableCaption>
             <TableHeader>
                 <TableRow>
                 <TableHead className="">Timestamp</TableHead>

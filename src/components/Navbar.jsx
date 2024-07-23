@@ -40,7 +40,7 @@ const Navbar = () => {
 
     return (
         <nav className='flex justify-between p-5'>
-            <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={100} /></Link>
+            <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={200} /></Link>
 
             <div className="flex gap-10 items-center">
             <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
@@ -67,7 +67,6 @@ const Navbar = () => {
                             <DropdownMenuGroup>
                             <DropdownMenuItem onClick={()=>router.push('/Profile')}>
                                 <FaRegUser className="me-2 text-gray-500"/> Profile
-                                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             {/* <DropdownMenuItem>
                                 <MdWallet className="me-2 text-gray-500"/> Payment
@@ -75,7 +74,6 @@ const Navbar = () => {
                             </DropdownMenuItem> */}
                             <DropdownMenuItem onClick={()=>router.push('/Settings')}>
                                 <GoGear className="me-2 text-gray-500"/> Settings
-                                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
@@ -99,7 +97,6 @@ const Navbar = () => {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={()=>signOut(auth)}>
                                 <MdOutlineLogout className="me-2 text-gray-500"/> Log out
-                            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                         </DropdownMenu>

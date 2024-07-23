@@ -13,15 +13,21 @@ import {
   import { Label } from "@/components/ui/label"
 import { Toggle } from '@/components/ui/toggle';
 import { usePathname } from "next/navigation"; 
-import { CiBookmark, CiEdit, CiFlag1, CiHeart, CiPen, CiShare2 } from "react-icons/ci";
+import { CiShare2 } from "react-icons/ci";
 import { IoCopyOutline } from "react-icons/io5";
+import { useToast } from "@/components/ui/use-toast"
 
 const ShareLink = () =>{
     const link = usePathname();
     const base = 'localhost:3000/'
+    const { toast } = useToast()
 
     const copyLink = (e) =>{
         navigator.clipboard.writeText(base + link)
+        toast({
+            title: "Project Link Copied",
+            description: "Paste it (Ctrl+V/Cmd+V) to share.",
+          })
     }
 
     return (

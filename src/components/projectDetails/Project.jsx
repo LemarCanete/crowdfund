@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import {
     Card,
@@ -28,16 +28,70 @@ import {
     HoverCardContent,
     HoverCardTrigger,
   } from "@/components/ui/hover-card"
-import { RiSettings4Line, RiSettingsLine, RiVerifiedBadgeFill } from "react-icons/ri";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Share from '@/components/ShareLink'
 import ReviewForm from '@/components/ReviewForm'
 import Updates from '@/components/Updates'
 import { TbCurrencyPeso } from "react-icons/tb";
 import { format } from 'date-fns';
 import BackerList from '@/components/BackerList'
+import { IoMdBookmark } from 'react-icons/io';
+import { collection, addDoc, doc, deleteDoc, query, where, getDocs } from "firebase/firestore"; 
+import { db } from '@/utils/firebase-config';
+import { AuthContext } from '@/context/AuthContext';
+import { useToast } from "@/components/ui/use-toast"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
+    const [isBookmark, setIsBookmark] = useState(false)
+    const {currentUser} = useContext(AuthContext)
+    const [tempBookmarkId, setTempBookmarkId] = useState('');
+    const { toast } = useToast()
+
+    useEffect(()=>{
+        const fetchBookmark = async ()=>{
+            const bookmarkRef = collection(db, "bookmarks");
+            const q = query(bookmarkRef, where("projectId", "==", projectDetails.uid), where("userId", "==", currentUser.uid));
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                setIsBookmark(true)
+                setTempBookmarkId(doc.id)
+            });
+        }
+
+        projectDetails.uid && currentUser.uid && fetchBookmark()
+    }, [projectDetails])
+
+    const addBookmark = async() =>{
+        const docRef = await addDoc(collection(db, "bookmarks"), {
+            coverPhoto: projectDetails.coverPhoto,
+            description: projectDetails.description,
+            projectId: projectDetails.uid,
+            title: projectDetails.title,
+            userId: currentUser.uid
+        });
+
+        setIsBookmark(true)
+        setTempBookmarkId(docRef.id)
+
+        toast({
+            title: "Boomarked Successfully",
+            description: "Project is now added to your bookmark",
+        })
+    }
+
+    const removeBookmark = async()  =>{
+        if(tempBookmarkId === "") return
+        await deleteDoc(doc(db, "bookmarks", tempBookmarkId));
+        setIsBookmark(false)
+        toast({
+            title: "Boomarked Removed Successfully",
+            description: "Project is now removed from your bookmarks",
+        })
+    }
+
     return (
         <div>
             <Card className='lg:mx-20 md:mx-28 my-2 '>
@@ -45,7 +99,9 @@ const Project = ({projectDetails}) => {
                     <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
                         {/* images */}
                         <div className="m-2">
-                            <img src={projectDetails.coverPhoto} alt="" className='rounded-t-lg col-span-3'/>
+                            <AspectRatio ratio={16 / 9}>
+                                <img src={projectDetails.coverPhoto} alt="" className='rounded-lg object-cover w-full h-60 md:h-80 lg:h-full'/>
+                            </AspectRatio>
                             {/* <img src={projectDetails.coverPhoto} alt="" className='rounded-bl-lg '/>
                             <img src={projectDetails.coverPhoto} alt="" className=''/>
                             <img src={projectDetails.coverPhoto} alt="" className='rounded-br-lg'/> */}
@@ -74,10 +130,15 @@ const Project = ({projectDetails}) => {
                                         <p className="text-sm font-light text-slate-500">{projectDetails.user?.username || projectDetails.user?.email}</p>
                                     </div>
                                 </div>
-                                <div className="flex justify-end">
+                                <div className="flex justify-end items-center">
                                     {/* {currentUser.uid && projectDetails.title && <EditProjectDialog projectDetails={projectDetails}/>} */}
-                                    <Toggle><CiBookmark className='text-xl'/></Toggle>
-                                    <Toggle><CiHeart className='text-xl'/></Toggle>
+                                    <div className="cursor-pointer" onClick={() => {isBookmark ? removeBookmark() : addBookmark()}}>
+                                        {
+                                            isBookmark ? <IoMdBookmark className="text-2xl text-yellow-300"/> : <CiBookmark className='text-xl'/>
+                                        }
+                                        
+                                    </div>
+                                    {/* <Toggle><CiHeart className='text-xl'/></Toggle> */}
                                     <Share />
                                     {/* <Toggle><CiFlag1 className='text-xl'/></Toggle> */}
                                 </div>
@@ -95,8 +156,8 @@ const Project = ({projectDetails}) => {
 
                                 {/* target, date, donate button */}
                                 <div className="flex justify-between text-sm my-2 items-center">
-                                    <div className="flex gap-2">
-                                        <BsCoin/>
+                                    <div className="flex gap-2 items-center">
+                                        <BsCoin className='text-lg'/>
                                         <div className="">
                                             <p className="font-extrabold"><TbCurrencyPeso className='inline'/> {projectDetails.raisedAmount}</p>
                                             <p className="">Total Raised</p>

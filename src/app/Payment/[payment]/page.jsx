@@ -73,7 +73,7 @@ export default function Page({params}) {
         try{
             // Add a new document with a generated id.
             const docRef = await addDoc(collection(db, "donations"), {
-                amount: cash,
+                amount: Number(cash),
                 user: !isPrivate ? currentUser.uid : 'anonymous',
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now(),

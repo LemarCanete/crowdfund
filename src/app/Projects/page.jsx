@@ -120,20 +120,24 @@ export default function Projects() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredProjects.sort((a, b) => b.createdAt - a.createdAt).map((proj, key) => {
                         return (
-                            <div className="bg-white p-4 rounded shadow-md" key={key}>
-                                <img src={proj.coverPhoto} alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
-                                <h3 className="text-xl font-bold text-wrap">{proj.title}</h3>
-                                <Badge variant="outline" className='w-fit h-fit'>{proj.category}</Badge>
-                                <p className="mt-2 text-wrap">{proj.description}</p>
-                                <div className="flex gap-4 items-end ">
-                                    <Progress value={(proj.raisedAmount/proj.targetAmount)*100} className=" mt-4" /> 
-                                    <p className="text-sm">{((proj.raisedAmount/proj.targetAmount)*100).toString().slice(0, 5)}%</p>
+                            <div className="bg-white p-4 rounded shadow-md h-[450px] flex flex-col justify-between" key={key}>
+                                <div className="">
+                                    <img src={proj.coverPhoto} alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
+                                    <h3 className="text-xl font-bold text-wrap">{proj.title}</h3>
+                                    <Badge variant="outline" className='w-fit h-fit'>{proj.category}</Badge>
+                                    <p className="mt-2 text-wrap">{proj.description.slice(0, 90)}{proj.description.length > 90 && '...' }</p>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <p className="">{proj.raisedAmount} php</p>
-                                    <p className="">Goal: {Number(proj.targetAmount).toLocaleString()} php</p>
+                                <div className="">
+                                    <div className="flex gap-4 items-end ">
+                                        <Progress value={(proj.raisedAmount/proj.targetAmount)*100} className=" mt-4" /> 
+                                        <p className="text-sm">{((proj.raisedAmount/proj.targetAmount)*100).toString().slice(0, 5)}%</p>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <p className="">{proj.raisedAmount} php</p>
+                                        <p className="">Goal: {Number(proj.targetAmount).toLocaleString()} php</p>
+                                    </div>
+                                    <Button variant="secondary" className="mt-4 w-full" onClick={()=>router.push(`Projects/${proj.uid}`)}>More Details</Button>
                                 </div>
-                                <Button className="mt-4" onClick={()=>router.push(`Projects/${proj.uid}`)}>More Details</Button>
                             </div>
                         )
                     })}
