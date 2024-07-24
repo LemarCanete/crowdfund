@@ -9,7 +9,7 @@ import ProjectSettings from '@/components/projectDetails/ProjectSettings'
 import Analytics from '@/components/projectDetails/Analytics'
 import Logs from '@/components/projectDetails/Logs'
 
-const page = ({params}) => {
+const Page = ({params}) => {
     const id = params.projectDetails;
     const [projectDetails, setProjectDetails] = useState({})
     const {currentUser} = useContext(AuthContext)
@@ -66,4 +66,4 @@ const page = ({params}) => {
     )
 }
 
-export default page
+export default Page

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Formik} from 'formik'
 
 // components
@@ -19,11 +19,16 @@ import { useRouter } from 'next/navigation'
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { addDoc, doc, getDoc, setDoc } from "firebase/firestore"; 
 import { useToast } from "@/components/ui/use-toast"
+import { AuthContext } from '@/context/AuthContext'
 
-const page = () => {
-    const [userType, setUserType] = useState('');
+const Page = () => {
     const router = useRouter()
     const { toast } = useToast()
+    const {currentUser} = useContext(AuthContext)
+
+    useEffect(()=>{
+        currentUser.uid && router.push('/')
+      }, [currentUser])
 
     const addUserAuth = (email, password)=>{
         createUserWithEmailAndPassword(auth, email, password)
@@ -204,4 +209,4 @@ const page = () => {
 }
 
 
-export default page
+export default Page

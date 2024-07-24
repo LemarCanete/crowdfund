@@ -217,7 +217,7 @@ const Updates = ({projectDetails}) => {
                         <DialogHeader>
                         <DialogTitle>Add Update</DialogTitle>
                         <DialogDescription>
-                            Make changes to add update here. Click save when you're done.
+                            Make changes to add update here. Click save when you&apos;re done.
                         </DialogDescription>
                         </DialogHeader>
                         <div className="">

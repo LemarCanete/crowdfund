@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import {Formik} from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -16,15 +16,20 @@ import { FcGoogle } from "react-icons/fc";
 
 // auth
 import {getAuth, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, browserLocalPersistence } from 'firebase/auth'
-import { db, provider } from '@/utils/firebase-config'
+import { auth, db, provider } from '@/utils/firebase-config'
 import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { useToast } from "@/components/ui/use-toast"
+import { AuthContext } from '@/context/AuthContext'
 
-const page = () => {
+const Page = () => {
     const router = useRouter()
     const { toast } = useToast()
+    const {currentUser} = useContext(AuthContext)
 
-    const auth = getAuth();
+    useEffect(()=>{
+        !currentUser.uid && router.push('/')
+      }, [currentUser])
+
     const signIn = (email, password) =>{
         setPersistence(auth, browserLocalPersistence)
         .then(() => {
@@ -193,4 +198,4 @@ const page = () => {
 }
 
 
-export default page
+export default Page

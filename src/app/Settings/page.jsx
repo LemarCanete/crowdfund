@@ -17,7 +17,6 @@ import ChangeEmail from "@/components/settings/ChangeEmail";
 import ChangePassword from "@/components/settings/ChangePassword";
 import { AuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { fetchUserData, saveUserData } from './pagebackend';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useToast } from "@/components/ui/use-toast"
 import { auth, db } from '@/utils/firebase-config';
@@ -79,7 +78,7 @@ const Page = () => {
     console.log(currentUser)
 
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center items-center'>
             <Tabs defaultValue="account" className="w-[900px]">
                 <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="account">Account</TabsTrigger>
@@ -92,7 +91,7 @@ const Page = () => {
                         <CardHeader>
                             <CardTitle>Account</CardTitle>
                             <CardDescription>
-                                Make changes to your account here. Click save when you're done.
+                                Make changes to your account here. Click save when you&apos;re done.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-2">

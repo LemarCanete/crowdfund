@@ -35,15 +35,15 @@ export default function Home() {
                 <h2 className="text-3xl font-semibold mb-8">What Our Donors Say</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div className="p-6 bg-white rounded shadow-md">
-                        <p className="italic">"This platform helped me support a cause close to my heart. The process was smooth and transparent."</p>
+                        <p className="italic">&quot;This platform helped me support a cause close to my heart. The process was smooth and transparent.&quot;</p>
                         <h3 className="mt-4 font-bold">- Jane Doe</h3>
                     </div>
                     <div className="p-6 bg-white rounded shadow-md">
-                        <p className="italic">"I was able to make a real difference thanks to this amazing crowdfunding platform."</p>
+                        <p className="italic">&quot;I was able to make a real difference thanks to this amazing crowdfunding platform.&quot;</p>
                         <h3 className="mt-4 font-bold">- John Smith</h3>
                     </div>
                     <div className="p-6 bg-white rounded shadow-md">
-                        <p className="italic">"An excellent platform for funding innovative projects. Highly recommended!"</p>
+                        <p className="italic">&quot;An excellent platform for funding innovative projects. Highly recommended!&quot;</p>
                         <h3 className="mt-4 font-bold">- Sarah Lee</h3>
                     </div>
                 </div>

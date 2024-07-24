@@ -86,7 +86,7 @@ const ChangeEmail = () => {
             <CardHeader>
                 <CardTitle>Change Email</CardTitle>
                 <CardDescription>
-                    Verify your email before changing your email. Click save when you're done.
+                    Verify your email before changing your email. Click save when you&apos;re done.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
