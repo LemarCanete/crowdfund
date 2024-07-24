@@ -32,6 +32,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Share from '@/components/ShareLink'
 import ReviewForm from '@/components/ReviewForm'
 import Updates from '@/components/Updates'
+import AboutTheAuthor from '@/components/AboutTheAuthor'
 import { TbCurrencyPeso } from "react-icons/tb";
 import { format } from 'date-fns';
 import BackerList from '@/components/BackerList'
@@ -184,6 +185,7 @@ const Project = ({projectDetails}) => {
                         <TabsTrigger value="updates">Updates</TabsTrigger>
                         <TabsTrigger value="backerList">Backer List</TabsTrigger>
                         <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                        <TabsTrigger value="aboutTheAuthor">About the author</TabsTrigger>
                     </TabsList>
                     {/* <TabsContent value="about">
                         <h1 className="text-xl">About</h1>
@@ -192,7 +194,10 @@ const Project = ({projectDetails}) => {
                     <TabsContent value="updates"><Updates projectDetails={projectDetails}/></TabsContent>
                     <TabsContent value="backerList"><BackerList projectDetails={projectDetails}/></TabsContent>
                     <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
+                    <TabsContent value="aboutTheAuthor"><AboutTheAuthor projectDetails={projectDetails} /></TabsContent>
                 </Tabs>
+
+                {/* static project */}
                 <div className="lg:col-span-2">
                     <h3 className="font-bold tracking-wider">Support other projects</h3>
 

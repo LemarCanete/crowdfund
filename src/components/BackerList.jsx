@@ -73,9 +73,7 @@ const BackerList = ({projectDetails}) => {
 
     console.log(donationList)
     return (
-        <div className='w-full'>
-            <h1 className="">Backer List</h1>
-            
+        <div className='w-full mt-6'>
             <div className="grid grid-cols-5 gap-2" >
 
             {donationList.length > 0 && donationList.map((donation, key) => {
@@ -93,7 +91,7 @@ const BackerList = ({projectDetails}) => {
 
 const GridDisplay = ({donation, key}) =>{
     return (
-        <div className="w-40 h-40 border flex flex-col items-center justify-center shadow" key={key}>
+        <div className="w-40 h-40 border flex flex-col items-center justify-center shadow " key={key}>
             <Avatar className='w-20 h-20'>
                 <AvatarImage src={`${donation?.photoURL}`} alt="@shadcn" sizes={100} className='w-96'/>
                 <AvatarFallback>{donation?.user.slice(0, 2) || "anon"}</AvatarFallback>

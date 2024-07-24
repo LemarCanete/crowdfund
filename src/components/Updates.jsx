@@ -207,7 +207,7 @@ const Updates = ({projectDetails}) => {
 
     return (
         <div>
-            <div className="flex justify-between w-11/12 items-center mb-2">
+            <div className="flex justify-between w-11/12 items-center mb-2 mt-6">
                 <h1 className="font-bold">Updates</h1>
                 <Dialog>
                     {currentUser.uid === projectDetails?.user.uid && <DialogTrigger asChild>

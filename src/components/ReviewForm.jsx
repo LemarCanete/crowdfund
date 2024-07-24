@@ -61,7 +61,7 @@ const ReviewForm = ({ projectId }) => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="mb-4">
+            <form onSubmit={handleSubmit} className="mb-4 mt-6">
                 <Label htmlFor="review" className="mb-2 block">Add a review:</Label>
                 <Textarea
                     id="review"

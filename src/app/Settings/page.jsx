@@ -19,16 +19,22 @@ import { AuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useToast } from "@/components/ui/use-toast"
-import { auth, db } from '@/utils/firebase-config';
+import { auth, db, storage } from '@/utils/firebase-config';
 import { updateEmail, updateProfile } from 'firebase/auth';
+import { Textarea } from '@/components/ui/textarea';
+import Image from 'next/image';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Page = () => {
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [location, setLocation] = useState("");
     const [contactNo, setContactNo] = useState("");
     const [message, setMessage] = useState("");
+    const [bio, setBio] = useState("");
+    const [file, setFile] = useState(null)
+    const [photoURL, setPhotoURL] = useState('');
 
     const router = useRouter();
     const { toast } = useToast()
@@ -44,7 +50,9 @@ const Page = () => {
             setName(currentUser.displayName || "");
             setUsername(currentUser.username || "");
             setLocation(currentUser.location || "");
-            setContactNo(currentUser.phoneNumber || "");
+            setContactNo(currentUser.contactNo || "");
+            setBio(currentUser.bio || "");
+            setPhotoURL(currentUser.photoURL || "")
         }
     }, [currentUser]);
 
@@ -52,15 +60,20 @@ const Page = () => {
         try {
             const docRef = doc(db, 'users', currentUser.uid);
             await updateDoc(docRef, {
-                name: name,
+                displayName: name,
                 username: username,
                 location: location,
                 contactNo: contactNo,
+                bio: bio
             });
 
             await updateProfile(auth.currentUser, {
                 displayName: name
             })
+
+            if(file.name){
+                handleUploadFile()
+            }
 
             toast({
                 title: "Your account has been updated successfully",
@@ -75,11 +88,81 @@ const Page = () => {
         }
     };
 
-    console.log(currentUser)
+
+    const handleUploadFile = async() =>{
+        try{
+            const metadata = {
+                contentType: 'image/jpeg'
+            };
+    
+            // Upload file and metadata to the object 'images/mountains.jpg'
+            const storageRef = ref(storage, 'profile/' + file.name);
+            const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+    
+            // Listen for state changes, errors, and completion of the upload.
+            uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+                }
+            }, 
+            (error) => {
+                switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    break;
+                case 'storage/canceled':
+                    // User canceled the upload
+                    break;
+                case 'storage/unknown':
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
+                }
+            }, 
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+                    console.log('File available at', downloadURL);
+    
+                    // update user from firestore
+                    const userRef = doc(db, "users", currentUser.uid);
+                    await updateDoc(userRef, {
+                        photoURL: downloadURL
+                    });
+    
+                    // update auth photoURL
+                    updateProfile(auth.currentUser, {
+                        photoURL: downloadURL
+                    })
+
+                    setCurrentUser(prev => ({...prev, photoURL: downloadURL}))
+                    setFile(null)
+                    setPhotoURL(downloadURL)
+                });
+            }
+            );
+
+            toast({
+                title: "Successfully changed profile picture",
+                description: "The changes you have made to your profile picture has been updated successfully",
+            })
+        }catch(err){
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with updating your profile picture. Pls try again",
+            })
+        }
+    }
 
     return (
         <div className='flex justify-center items-center'>
-            <Tabs defaultValue="account" className="w-[900px]">
+            <Tabs defaultValue="account" className="w-[1200px]">
                 <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="account">Account</TabsTrigger>
                     <TabsTrigger value="changeEmail">Change Email</TabsTrigger>
@@ -95,21 +178,40 @@ const Page = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-2">
-                            <div className="space-y-1">
-                                <Label htmlFor="name">Name</Label>
-                                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                            <div className="grid grid-cols-3 mb-4">
+                                {/* photoURL */}
+                                <div className="flex flex-col justify-end gap-2 row-span-3 me-10">
+                                    <Label htmlFor="photoURL" className=''>
+                                        <img className='w-48 mx-auto' src={photoURL || 'https://png.pngtree.com/png-vector/20240427/ourmid/pngtree-user-icon-brush-profile-vector-png-image_12327708.png'}/>
+                                    </Label>
+                                    <Input type='file' id="photoURL" accept='image/*' className={`border-0 underline ${file ? 'visible' : 'invisible'}`} onChange={e => setFile(e.target.files[0])}/>
+                                </div>
+                                {/* name */}
+                                <div className="flex flex-col justify-end gap-2 col-span-2">
+                                    <Label htmlFor="name">Name</Label>
+                                    <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                                </div>
+                                {/* username */}
+                                <div className="flex flex-col justify-end gap-2 col-span-2">
+                                    <Label htmlFor="username">Username</Label>
+                                    <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                                </div>
+                                {/* phoneNumber */}
+                                <div className="flex flex-col justify-end gap-2 col-span-2">
+                                    <Label htmlFor="contactNo">Phone Number</Label>
+                                    <Input id="contactNo" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+                                </div>
                             </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="username">Username</Label>
-                                <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                            </div>
+                            {/* location */}
                             <div className="space-y-1">
                                 <Label htmlFor="location">Location</Label>
                                 <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
                             </div>
+                            {/* bio */}
                             <div className="space-y-1">
-                                <Label htmlFor="contactNo">Contact No.</Label>
-                                <Input id="contactNo" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+                                <Label htmlFor="bio">Bio</Label>
+                                <Textarea id="bio" rows={5} maxLength="1000" value={bio} onChange={(e) => setBio(e.target.value)} />
+
                             </div>
                         </CardContent>
                         <CardFooter>
