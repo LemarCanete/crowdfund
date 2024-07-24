@@ -30,6 +30,7 @@ import { GoGear, GoProject  } from "react-icons/go";
 import { MdOutlineLogout, MdWallet } from "react-icons/md";
 import AddAProjectDialog from '@/components/AddAProjectDialog'
 import { AuthContext } from '@/context/AuthContext'
+import Image from 'next/image'
 
 const Navbar = () => {
     const router = useRouter();
@@ -40,7 +41,7 @@ const Navbar = () => {
 
     return (
         <nav className='flex justify-between p-5'>
-            <Link href="/" className=""><img src="Logo.jpg" alt="Logo" width={200} /></Link>
+            <Link href="/" className=""><Image src="/logo_transparent.png" alt="logo" width={142} height={0} /></Link>
 
             <div className="flex gap-10 items-center">
             <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
