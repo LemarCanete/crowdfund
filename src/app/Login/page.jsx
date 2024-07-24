@@ -27,7 +27,7 @@ const Page = () => {
     const {currentUser} = useContext(AuthContext)
 
     useEffect(()=>{
-        !currentUser.uid && router.push('/')
+        currentUser.uid && router.push('/')
       }, [currentUser])
 
     const signIn = (email, password) =>{
