@@ -131,6 +131,22 @@ const ProjectSettings = ({ projectId }) => {
           <option value="">Select category...</option>
           <option value="Health">Health</option>
           <option value="Education">Education</option>
+          <option value="Pets">Pets</option>
+          <option value="Crafts">Crafts</option>
+          <option value="Foods">Foods</option>
+          <option value="Design">Design</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Travel">Travel</option>
+          <option value="Technology">Technology</option>
+          <option value="Disaster Relief">Disaster</option>
+          <option value="Music">Music</option>
+          <option value="Journalism">Journalism</option>
+          <option value="Arts and Culture">Arts and Culture</option>
+          <option value="Environment">Environment</option>
+          <option value="Games">Games</option>
+          <option value="Comics and Animation">Comics and Animation</option>
+          <option value="Entrepreneurship">Entrepreneurship</option>
+          <option value="Community">Community</option>
         </select>
       </div>
 
