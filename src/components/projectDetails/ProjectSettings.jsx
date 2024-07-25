@@ -83,7 +83,7 @@ const ProjectSettings = ({ projectId }) => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md mx-20">
+    <div className="p-6 bg-white rounded-lg shadow-md md:mx-20">
       <h2 className="text-2xl font-bold mb-4">Project Settings</h2>
 
     

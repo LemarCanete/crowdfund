@@ -114,7 +114,7 @@ export default function Projects() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredProjects.sort((a, b) => b.createdAt - a.createdAt).map((proj, key) => {
                         return (
-                            <div className="bg-white p-4 rounded shadow-md h-[450px] flex flex-col justify-between" key={key}>
+                            <div className="bg-white p-4 rounded shadow-md md-[450px] sm:h-[500] flex flex-col justify-between" key={key}>
                                 <div className="">
                                     <img src={proj.coverPhoto} alt="Project 1" className="w-full h-48 object-cover rounded mb-4" />
                                     <h3 className="text-xl font-bold text-wrap">{proj.title}</h3>

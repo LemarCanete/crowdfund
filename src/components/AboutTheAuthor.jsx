@@ -6,8 +6,8 @@ const AboutTheAuthor = ({projectDetails}) => {
     const user = projectDetails.user
     return (
         <div className=''>
-            <div className="flex gap-10 items-center my-6">
-                <img src={user?.photoURL || 'https://png.pngtree.com/png-vector/20240427/ourmid/pngtree-user-icon-brush-profile-vector-png-image_12327708.png'} className='w-48'/>
+            <div className="md:flex md:gap-10 md:items-center my-6">
+                <img className='w-48' src={user?.photoURL || 'https://png.pngtree.com/png-vector/20240427/ourmid/pngtree-user-icon-brush-profile-vector-png-image_12327708.png'} />
                 <div className="">
                     <p className="text-black/75 leading-7">Name: {user?.displayName}</p>
                     <p className="text-black/75 leading-7">Username: {user?.username}</p>
