@@ -7,7 +7,6 @@ import { db } from '@/utils/firebase-config';
 import { collection, addDoc } from 'firebase/firestore';
 import emailjs from 'emailjs-com';
 
-
 emailjs.init('2qSkl3uDgUB7rmuwY');
 
 const ContactUsPage = () => {
@@ -55,58 +54,50 @@ const ContactUsPage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'flex-start', padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="flex flex-col lg:flex-row items-start p-5 lg:p-20 max-w-6xl mx-auto">
             {/* Left Section - Image */}
-            <div style={{ flex: '1 1 50%', marginRight: '20px' }}>
+            <div className="flex-1 mb-10 lg:mb-0 lg:mr-10">
                 <img 
                     src="/contactUS.png"
                     alt="Contact Us" 
-                    style={{ width: '100%', maxWidth: '100%', height: 'auto', borderRadius: '10px' }} 
+                    className="w-full h-auto rounded-lg"
                 />
             </div>
             
             {/* Right Section - Contact Form and Information */}
-            <div style={{ flex: '1 1 50%', paddingLeft: '20px' }}>
-                <h1>Contact Us</h1>
+            <div className="flex-1 lg:pl-10">
+                <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
                 
                 {/* Introduction */}
-                <p>
+                <p className="mb-6">
                     We’d love to hear from you! Whether you have a question, feedback, or just want to say hello, feel free to reach out to us through any of the following methods.
                 </p>
                 
                 {/* Contact Form */}
-                <div style={{ marginBottom: '30px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-                    <h2>Contact Form</h2>
-                    <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '10px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <BsFillPersonCheckFill style={{ marginRight: '10px', fontSize: '1.5em' }} />
-                            <label htmlFor="name">Name:</label>
-                            <input type="text" id="name" name="name" required style={{ marginLeft: '10px', flex: '1' }} value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="mb-8 pb-8 border-b border-gray-300">
+                    <h2 className="text-2xl font-semibold mb-4">Contact Form</h2>
+                    <form onSubmit={handleSubmit} className="grid gap-4">
+                        <div className="flex items-center">
+                            <BsFillPersonCheckFill className="mr-2 text-2xl" />
+                            <label htmlFor="name" className="flex-1">Name:</label>
+                            <input type="text" id="name" name="name" required className="ml-2 p-2 border border-gray-300 rounded flex-1" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <MdEmail style={{ marginRight: '10px', fontSize: '1.5em' }} />
-                            <label htmlFor="email">Email:</label>
-                            <input type="email" id="email" name="email" required style={{ marginLeft: '10px', flex: '1' }} value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <div className="flex items-center">
+                            <MdEmail className="mr-2 text-2xl" />
+                            <label htmlFor="email" className="flex-1">Email:</label>
+                            <input type="email" id="email" name="email" required className="ml-2 p-2 border border-gray-300 rounded flex-1" value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', alignItems: 'center' }}>
-                            <label htmlFor="subject">Subject:</label>
-                            <input type="text" id="subject" name="subject" required style={{ marginLeft: '10px', flex: '1' }} value={subject} onChange={(e) => setSubject(e.target.value)} />
+                        <div className="flex items-center">
+                            <label htmlFor="subject" className="flex-1">Subject:</label>
+                            <input type="text" id="subject" name="subject" required className="ml-2 p-2 border border-gray-300 rounded flex-1" value={subject} onChange={(e) => setSubject(e.target.value)} />
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', alignItems: 'start' }}>
-                            <label htmlFor="message">Message:</label>
-                            <textarea id="message" name="message" required style={{ marginLeft: '10px', flex: '1', minHeight: '100px' }} value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                        <div className="flex items-start">
+                            <label htmlFor="message" className="flex-1">Message:</label>
+                            <textarea id="message" name="message" required className="ml-2 p-2 border border-gray-300 rounded flex-1 h-32" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                         </div>
                         <button 
                             type="submit" 
-                            style={{ 
-                                backgroundColor: 'black', 
-                                color: 'white', 
-                                border: 'none', 
-                                padding: '10px 20px', 
-                                cursor: 'pointer', 
-                                borderRadius: '5px',
-                                marginTop: '10px' 
-                            }}
+                            className="bg-black text-white border-none py-2 px-4 cursor-pointer rounded mt-4"
                         >
                             Send Message
                         </button>
@@ -114,28 +105,28 @@ const ContactUsPage = () => {
                 </div>
                 
                 {/* Email */}
-                <div style={{ marginBottom: '30px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <MdEmail style={{ marginRight: '10px', fontSize: '1.5em' }} />
-                        <h2>Email</h2>
+                <div className="mb-8 pb-8 border-b border-gray-300">
+                    <div className="flex items-center mb-4">
+                        <MdEmail className="mr-2 text-2xl" />
+                        <h2 className="text-2xl font-semibold">Email</h2>
                     </div>
                     <p>crowdfund.cpepe463@gmail.com</p>
                 </div>
                 
                 {/* Follow Us */}
-                <div style={{ marginBottom: '30px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <FaFacebook style={{ marginRight: '10px', fontSize: '1.5em' }} />
-                        <h2>Follow Us</h2>
+                <div className="mb-8 pb-8 border-b border-gray-300">
+                    <div className="flex items-center mb-4">
+                        <FaFacebook className="mr-2 text-2xl" />
+                        <h2 className="text-2xl font-semibold">Follow Us</h2>
                     </div>
                     <p>
-                        <a href="https://www.facebook.com/profile.php?id=61561452913237" target="_blank" rel="noopener noreferrer">Facebook</a>
+                        <a href="https://www.facebook.com/profile.php?id=61561452913237" target="_blank" rel="noopener noreferrer" className="text-blue-500">Facebook</a>
                     </p>
                 </div>
                 
                 {/* Privacy */}
-                <div style={{ marginBottom: '30px' }}>
-                    <h2>Privacy</h2>
+                <div className="mb-8">
+                    <h2 className="text-2xl font-semibold">Privacy</h2>
                     <p>We respect your privacy. Any information you provide will be used solely to respond to your inquiry and will not be shared with third parties.</p>
                 </div>
             </div>
