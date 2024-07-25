@@ -95,9 +95,9 @@ const Project = ({projectDetails}) => {
 
     return (
         <div>
-            <Card className='lg:mx-20 md:mx-28 my-2 '>
+            <Card className='md:mx-28 my-2 '>
                 <CardContent className='p-0'>
-                    <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                         {/* images */}
                         <div className="m-2">
                             <AspectRatio ratio={16 / 9}>
@@ -111,7 +111,7 @@ const Project = ({projectDetails}) => {
                         {/* details */}
                         <div className="m-2">
                             {/* header */}
-                            <div className="grid lg:grid-cols-2 md:grid-cols-1">
+                            <div className="grid grid-cols-2">
                                 <div className="flex gap-4">
                                     <Avatar>
                                         <AvatarImage src={projectDetails.user?.photoURL} alt="@shadcn" />
@@ -139,9 +139,7 @@ const Project = ({projectDetails}) => {
                                         }
                                         
                                     </div>
-                                    {/* <Toggle><CiHeart className='text-xl'/></Toggle> */}
                                     <Share />
-                                    {/* <Toggle><CiFlag1 className='text-xl'/></Toggle> */}
                                 </div>
                             </div>
 
@@ -179,7 +177,7 @@ const Project = ({projectDetails}) => {
             </Card>
             
             <div className="grid lg:grid-cols-6 grid-cols-1 lg:mx-20 mx-auto my-8">
-                <Tabs defaultValue="updates" className="col-span-4">
+                <Tabs defaultValue="updates" className="col-span-4 mx-auto md:mx-0">
                     <TabsList>
                         {/* <TabsTrigger value="about">About</TabsTrigger> */}
                         <TabsTrigger value="updates">Updates</TabsTrigger>
