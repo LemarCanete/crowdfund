@@ -91,20 +91,20 @@ export default function Projects() {
             <header className="flex flex-col items-center mt-4">
                 <h1 className="text-3xl font-bold tracking-wider">My Projects</h1>
             </header>
-            <div className="flex justify-between items-center mt-16 mb-8">
+            <div className="md:flex justify-between items-center mt-16 mb-8">
                 <Input type="text" 
                     id="search"
-                    className="w-96 p-2 border  "
+                    className="w-full md:w-96 p-2 border  "
                     placeholder="Search"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                 />
-                <div className="flex gap-4 items-center justify-end">
+                <div className="md:flex gap-4 items-center justify-end my-2 md:my-0">
                     <Select onValueChange={(val) =>
                         {
                             setSelectedCategory(val) 
                         }}>
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="md:w-[180px] w-full my-2 md:0">
                             <SelectValue placeholder="All" defaultValue="All"/>
                         </SelectTrigger>
                         <SelectContent>
@@ -123,7 +123,7 @@ export default function Projects() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredProjects.sort((a, b) => b.createdAt - a.createdAt).map((proj, key) => {
                         return (
-                            <div className="bg-white p-4 rounded shadow-md h-[450px] flex flex-col justify-between" key={key}>
+                            <div className="bg-white p-4 rounded shadow-md h-[500] md:h-[450px] flex flex-col justify-between" key={key}>
                                 <div className="">
                                     <img src={proj.coverPhoto} alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>
                                     <h3 className="text-xl font-bold text-wrap">{proj.title}</h3>

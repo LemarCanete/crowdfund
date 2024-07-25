@@ -120,8 +120,8 @@ const AddAProjectDialog = ({className}) => {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button className=""><FaPlus className="me-2"/> Add a Project</Button>
+            <DialogTrigger asChild className='mx-auto w-full'>
+                <Button className="mx-auto"><FaPlus className="md:me-2 "/> Add a Project</Button>
             </DialogTrigger>
             <DialogContent className="min-w-[1000]">
                 <DialogHeader>
