@@ -32,7 +32,7 @@ export default function Projects() {
     const {currentUser} = useContext(AuthContext)
 
     useEffect(()=>{
-        !currentUser.uid && router.push('/')
+        !currentUser.uid && !currentUser && router.push('/')
     }, [currentUser])
 
     useEffect(()=>{
@@ -144,7 +144,10 @@ export default function Projects() {
                             </div>
                         )
                     })}
+
+
                 </div>
+                {filteredProjects.length < 1 && <p className='text-slate-200 italic text-center text-3xl'>No projects created</p>}
             </section>
         </main>
     )

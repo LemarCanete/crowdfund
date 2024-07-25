@@ -10,11 +10,19 @@ import {
 } from "@/components/ui/card";
 import { fetchProjects, fetchUserDonations, addDonation } from './pagebackend';
 import { AuthContext } from '@/context/AuthContext';
+import { useRouter } from "next/navigation";
 
 export default function DonationsPage() {
     const { currentUser } = useContext(AuthContext);
     const [projects, setProjects] = useState([]);
     const [donations, setDonations] = useState([]);
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!currentUser.uid && !currentUser) {
+            router.push('/');
+        }
+    }, [currentUser]);
 
     useEffect(() => {
         const getProjects = async () => {
@@ -104,6 +112,10 @@ export default function DonationsPage() {
                                         <p className="mt-2">Raised Amount: ₱{project.raisedAmount.toLocaleString()}</p>
                                     </div>
                                 ))}
+
+                            { supportedProjectIds &&
+                                <p className='text-slate-200 italic text-center text-3xl mt-6'>No projects supported yet!</p>
+                            }
                         </CardContent>
                     </Card>
                 </TabsContent>

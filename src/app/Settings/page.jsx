@@ -39,11 +39,11 @@ const Page = () => {
     const router = useRouter();
     const { toast } = useToast()
 
-    // useEffect(() => {
-    //     if (!currentUser.uid) {
-    //         router.push('/');
-    //     }
-    // }, [currentUser]);
+    useEffect(() => {
+        if (!currentUser.uid && !currentUser) {
+            router.push('/');
+        }
+    }, [currentUser]);
 
     useEffect(() => {
         if (currentUser) {
@@ -163,11 +163,11 @@ const Page = () => {
     return (
         <div className='flex justify-center items-center'>
             <Tabs defaultValue="account" className="w-[1200px]">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="account">Account</TabsTrigger>
                     <TabsTrigger value="changeEmail">Change Email</TabsTrigger>
-                    <TabsTrigger value="changePassword">Change Password</TabsTrigger>
-                    <TabsTrigger value="verifyAccount">Verify Account</TabsTrigger>
+                    {/* <TabsTrigger value="changePassword">Change Password</TabsTrigger>
+                    <TabsTrigger value="verifyAccount">Verify Account</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="account">
                     <Card>
@@ -223,12 +223,12 @@ const Page = () => {
                 <TabsContent value="changeEmail">
                     <ChangeEmail />
                 </TabsContent>
-                <TabsContent value="changePassword">
+                {/* <TabsContent value="changePassword">
                     <ChangePassword />
                 </TabsContent>
                 <TabsContent value="verifyAccount">
                     <VerifyAccount />
-                </TabsContent>
+                </TabsContent> */}
             </Tabs>
         </div>
     );

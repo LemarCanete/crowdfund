@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from '@/components/Navbar'
 import { Toaster } from "@/components/ui/toaster"
 import { AuthContextProvider } from "@/context/AuthContext";
+import NextTopLoader from 'nextjs-toploader';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
         <body className={inter.className}>
             <AuthContextProvider>
+                <NextTopLoader showSpinner={false}/>
                 <Navbar />  
                 {children}
                 <Toaster />

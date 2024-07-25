@@ -37,7 +37,7 @@ function ProfilePage() {
   }, [currentUser]);
 
   useEffect(()=>{
-    !currentUser.uid && router.push('/')
+    !currentUser.uid && !currentUser && router.push('/')
   }, [currentUser])
 
   /*useEffect(() => {

@@ -41,7 +41,7 @@ const Navbar = () => {
 
     return (
         <nav className='flex justify-between p-5'>
-            <Link href="/" className=""><Image src="/logov5.png" alt="logo" width={155} height={0} /></Link>
+            <Link href="/" className=""><Image src="/logov5.png" alt="logo" width={155} height={155} priority/></Link>
 
             <div className="flex gap-10 items-center">
             <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
@@ -66,35 +66,42 @@ const Navbar = () => {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem onClick={()=>router.push('/Profile')}>
-                                <FaRegUser className="me-2 text-gray-500"/> Profile
-                            </DropdownMenuItem>
-                            {/* <DropdownMenuItem>
-                                <MdWallet className="me-2 text-gray-500"/> Payment
-                                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                            </DropdownMenuItem> */}
-                            <DropdownMenuItem onClick={()=>router.push('/Settings')}>
-                                <GoGear className="me-2 text-gray-500"/> Settings
-                            </DropdownMenuItem>
+                            <Link href="/Profile">
+                                <DropdownMenuItem >
+                                    <FaRegUser className="me-2 text-gray-500"/> Profile
+                                </DropdownMenuItem>
+                            </Link>
+                            <Link href="/Settings">
+                                <DropdownMenuItem>
+                                    <GoGear className="me-2 text-gray-500"/> Settings
+                                </DropdownMenuItem>
+                            </Link>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                            <DropdownMenuItem onClick={()=> router.push('/MyProjects')}>
-                                <GoProject className="me-2 text-gray-500" /> My Projects
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={()=> router.push('/Bookmark')}>
-                                <FaBookmark className="me-2 text-gray-500" /> Bookmark
-                            </DropdownMenuItem>
-                            {/* <DropdownMenuItem>
-                                <FaPlus className="me-2 text-gray-500"/> Add a Project
-                                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                            </DropdownMenuItem> */}
+                                <Link href="/MyProjects">
+                                    <DropdownMenuItem>
+                                        <GoProject className="me-2 text-gray-500" /> My Projects
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="Bookmark">
+                                    <DropdownMenuItem >
+                                        <FaBookmark className="me-2 text-gray-500" /> Bookmark
+                                    </DropdownMenuItem>
+                                </Link>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem><FaLink className="me-2 text-gray-500"/> Socials</DropdownMenuItem>
-                            <DropdownMenuItem onClick={()=> router.push('/Donations')}>
-                                <FaHandHoldingHeart className="me-2 text-gray-500"/> Donations
-                            </DropdownMenuItem>
+                            <Link href="Social">
+                                <DropdownMenuItem >
+                                    <FaLink className="me-2 text-gray-500" /> Socials
+                                </DropdownMenuItem>
+                            </Link>
+                            
+                            <Link href="/Donations">
+                                <DropdownMenuItem >
+                                    <FaHandHoldingHeart className="me-2 text-gray-500"/> Donations
+                                </DropdownMenuItem>
+                            </Link>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={()=>signOut(auth)}>
                                 <MdOutlineLogout className="me-2 text-gray-500"/> Log out

@@ -123,7 +123,7 @@ const Project = ({projectDetails}) => {
                                                 <h1 className="text-sm font-black tracking-wider hover:underline cursor-pointer">{projectDetails.user?.displayName}</h1>
                                             </HoverCardTrigger>
                                             <HoverCardContent className='flex gap-2 items-center text-sm'>
-                                                <RiVerifiedBadgeFill className='text-green-500'/> Verified
+                                                <RiVerifiedBadgeFill className='text-green-500'/> Not Verified
 
                                             </HoverCardContent>
                                         </HoverCard>

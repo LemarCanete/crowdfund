@@ -20,6 +20,12 @@ const Bookmarks = () => {
     const router = useRouter();
     const { toast } = useToast()
 
+    useEffect(() => {
+        if (!currentUser.uid && !currentUser) {
+            router.push('/');
+        }
+    }, [currentUser]);
+
   useEffect(() => {
     if (currentUser) {
       fetchAllProjects();
@@ -39,7 +45,6 @@ const Bookmarks = () => {
       console.error("Error fetching all projects: ", error);
     }
   };
-
 
   const fetchBookmarkedProjects = async () => {
     try {
@@ -103,7 +108,6 @@ const Bookmarks = () => {
 
   const filteredProjects = allProjects.filter(project => !bookmarkedProjects.find(bm => bm.title === project.title));
 
-  console.log(filteredProjects)
   return (
     <main className='container mx-auto p-4'>
         <header className="text-center my-8" ref={bookmarkedRef}>
