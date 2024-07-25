@@ -24,7 +24,8 @@ const Page = ({params}) => {
 
             // get project author details
             const usersRef = collection(db, "users");
-            const q = query(usersRef, where("uid", "==", docSnap.data().author));
+            const user = docSnap.data()?.author
+            const q = query(usersRef, where("uid", "==", user));
 
             const querySnapshot = await getDocs(q);
             let author;

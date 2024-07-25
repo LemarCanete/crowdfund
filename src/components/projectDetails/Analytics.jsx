@@ -106,7 +106,7 @@ const Analytics = ({projectDetails}) => {
             <Radial projectDetails={projectDetails}/>
             {/* <LineGraph projectDetails={projectDetails}/> */}
            {donations.length > 0 && <AreaGraph projectDetails={projectDetails} donations={donations}/>}
-            <PieGraph projectDetails={projectDetails}/>
+            {/* <PieGraph projectDetails={projectDetails}/> */}
             {donations.length > 0 && <BarGraph projectDetails={projectDetails} donations={donations}/>}
             {donations.length > 0 && reviews.length > 0 && <div className="">
                 <AreaGraph2 projectDetails={projectDetails} donations={donations} rev={reviews} upd={updates}/>
