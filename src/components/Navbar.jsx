@@ -46,7 +46,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className='flex justify-between items-center p-5 bg-white shadow-sm'>
+        <nav className='flex justify-between items-center p-5 bg-white '>
             <Link href="/" className="flex-shrink-0">
                 <Image src="/logov5.png" alt="logo" width={155} height={0} />
             </Link>
