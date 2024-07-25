@@ -102,7 +102,7 @@ const Analytics = ({projectDetails}) => {
     console.log(updates)
 
     return (
-        <div className='md:mx-20 grid grid-cols-1 md:grid-cols-2 gap-10 my-4'>
+        <div className='md:mx-20 grid grid-cols-1 md:grid-cols-2 gap-10 my-4 mx-2'>
             <Radial projectDetails={projectDetails}/>
             {/* <LineGraph projectDetails={projectDetails}/> */}
            {donations.length > 0 && <AreaGraph projectDetails={projectDetails} donations={donations}/>}

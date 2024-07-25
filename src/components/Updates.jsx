@@ -145,8 +145,8 @@ const Updates = ({projectDetails}) => {
             });
             
             toast({
-                title: `Update Successful`,
-                description: "Successfully added  ${title} as update",
+                title: `Project Update Successful`,
+                description: `Successfully added  ${title} as update`,
               })
 
             setImages([]);
@@ -207,7 +207,7 @@ const Updates = ({projectDetails}) => {
 
     return (
         <div>
-            <div className="flex justify-between w-11/12 items-center mb-2 mt-6">
+            <div className="flex justify-between w-full md:w-11/12 items-center mb-2 mt-6 mx-2 md:mx-0">
                 <h1 className="font-bold">Updates</h1>
                 <Dialog>
                     {currentUser.uid === projectDetails?.user.uid && <DialogTrigger asChild>
@@ -242,7 +242,7 @@ const Updates = ({projectDetails}) => {
                 </Dialog>
             </div>
 
-            <div className="text-wrap flex flex-col gap-2">
+            <div className="text-wrap flex flex-col gap-2 items-center md:items-start">
                 {updates.map((update, key)=>{
                     return (
                         <Card className="w-11/12 rounded-sm" key={key}>

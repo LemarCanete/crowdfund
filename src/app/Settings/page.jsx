@@ -170,7 +170,7 @@ const Page = () => {
                     <TabsTrigger value="verifyAccount">Verify Account</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="account">
-                    <Card>
+                    <Card className='border-0 md:border'>
                         <CardHeader>
                             <CardTitle>Account</CardTitle>
                             <CardDescription>
@@ -178,7 +178,7 @@ const Page = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-2">
-                            <div className="grid grid-cols-3 mb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 mb-4">
                                 {/* photoURL */}
                                 <div className="flex flex-col justify-end gap-2 row-span-3 me-10">
                                     <Label htmlFor="photoURL" className=''>

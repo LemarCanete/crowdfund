@@ -42,6 +42,7 @@ import { db } from '@/utils/firebase-config';
 import { AuthContext } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { Separator } from '@/components/ui/separator';
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
@@ -94,8 +95,8 @@ const Project = ({projectDetails}) => {
     }
 
     return (
-        <div>
-            <Card className='md:mx-28 my-2 '>
+        <div className='mx-2 md:mx-0'>
+            <Card className='md:mx-20 my-2 border-0 md:border'>
                 <CardContent className='p-0'>
                     <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                         {/* images */}
@@ -176,7 +177,7 @@ const Project = ({projectDetails}) => {
                 </CardContent>
             </Card>
             
-            <div className="grid lg:grid-cols-6 grid-cols-1 lg:mx-20 mx-auto my-8">
+            <div className="grid lg:grid-cols-6 grid-cols-1 md:mx-20 mx-auto my-8">
                 <Tabs defaultValue="updates" className="col-span-4 mx-auto md:mx-0">
                     <TabsList>
                         {/* <TabsTrigger value="about">About</TabsTrigger> */}
@@ -194,10 +195,12 @@ const Project = ({projectDetails}) => {
                     <TabsContent value="reviews"><ReviewForm projectId={projectDetails.uid} /></TabsContent>
                     <TabsContent value="aboutTheAuthor"><AboutTheAuthor projectDetails={projectDetails} /></TabsContent>
                 </Tabs>
+                
 
                 {/* static project */}
                 <div className="lg:col-span-2">
-                    <h3 className="font-bold tracking-wider">Support other projects</h3>
+                    <Separator className='md:hidden mt-16 w-5/6 mx-auto'/>
+                    <h3 className="font-bold tracking-wider my-4 lg:my-0">Support other projects</h3>
 
                     <div className="bg-white p-4 rounded shadow-md">
                         <img src="/Project1.jpg" alt="Project 1" className="w-full h-48 object-cover rounded mb-4"/>

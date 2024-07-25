@@ -6,7 +6,7 @@ import AdminActionsLogs from '@/components/Logs/AdminActionsLogs'
 const Logs = ({projectDetails}) => {
     
     return (
-        <div className='md:mx-20'>
+        <div className='md:mx-20 mx-2'>
             <h1 className="font-bold mt-4">Donation Logs</h1>
             <DonationLogs projectDetails={projectDetails}/>
 
