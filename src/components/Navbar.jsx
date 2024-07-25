@@ -96,27 +96,41 @@ const Navbar = () => {
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem onClick={() => handleLinkClick('/Profile')}>
-                                        <FaRegUser className="mr-2 text-gray-500" /> Profile
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => handleLinkClick('/Settings')}>
-                                        <GoGear className="mr-2 text-gray-500" /> Settings
-                                    </DropdownMenuItem>
+                                    <Link href="/Profile">
+                                        <DropdownMenuItem >
+                                            <FaRegUser className="mr-2 text-gray-500" /> Profile
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/Settings">
+                                        <DropdownMenuItem >
+                                            <GoGear className="mr-2 text-gray-500" /> Settings
+                                        </DropdownMenuItem>
+                                    </Link>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem onClick={() => handleLinkClick('/MyProjects')}>
-                                        <GoProject className="mr-2 text-gray-500" /> My Projects
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => handleLinkClick('/Bookmark')}>
-                                        <FaBookmark className="mr-2 text-gray-500" /> Bookmark
-                                    </DropdownMenuItem>
+                                    <Link href="MyProjects">
+                                        <DropdownMenuItem >
+                                            <GoProject className="mr-2 text-gray-500" /> My Projects
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/Bookmark">
+                                        <DropdownMenuItem>
+                                            <FaBookmark className="mr-2 text-gray-500" /> Bookmark
+                                        </DropdownMenuItem>
+                                    </Link>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem><FaLink className="mr-2 text-gray-500" /> Socials</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleLinkClick('/Donations')}>
-                                    <FaHandHoldingHeart className="mr-2 text-gray-500" /> Donations
-                                </DropdownMenuItem>
+                                <Link href="Social">
+                                    <DropdownMenuItem>
+                                        <FaLink className="mr-2 text-gray-500" /> Socials
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/Donations">
+                                    <DropdownMenuItem >
+                                        <FaHandHoldingHeart className="mr-2 text-gray-500" /> Donations
+                                    </DropdownMenuItem>
+                                </Link>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => { signOut(auth); setIsOpen(false); }}>
                                     <MdOutlineLogout className="mr-2 text-gray-500" /> Log out
