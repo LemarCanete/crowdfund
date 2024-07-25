@@ -185,7 +185,7 @@ const Project = ({projectDetails}) => {
                         <TabsTrigger value="updates">Updates</TabsTrigger>
                         <TabsTrigger value="backerList">Backer List</TabsTrigger>
                         <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                        <TabsTrigger value="aboutTheAuthor">About the author</TabsTrigger>
+                        <TabsTrigger value="aboutTheAuthor">Author Bio</TabsTrigger>
                     </TabsList>
                     {/* <TabsContent value="about">
                         <h1 className="text-xl">About</h1>
