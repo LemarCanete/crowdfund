@@ -113,51 +113,52 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
         layout: "tabs",
     };
     return (
-        <div className="grid grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
-            <div className="bg-white p-4 rounded shadow-md ">
-                <img src={projectDetails.coverPhoto} alt={projectDetails.title} className="w-full h-48 object-cover rounded mb-4"/>
+            <div className="bg-white p-4 rounded shadow-md">
+                <img src={projectDetails.coverPhoto} alt={projectDetails.title} className="w-full h-48 object-cover rounded mb-4" />
                 <h3 className="text-xl font-bold">{projectDetails.title}</h3>
                 <p className="mt-2">{projectDetails.description}</p>
-                    <Progress value={(projectDetails.raisedAmount/projectDetails.targetAmount) * 100} className="w-[85%] mt-4" />
-                    <div className="flex flex-row">
+                <Progress value={(projectDetails.raisedAmount / projectDetails.targetAmount) * 100} className="w-full lg:w-[85%] mt-4" />
+                <div className="flex flex-col lg:flex-row">
                     <p className="basis-1/2">Raised: {projectDetails.raisedAmount} php</p>
                     <p className="basis-1/2">Goal: {projectDetails.targetAmount} php</p>
-                    </div>
-                <Button className="mt-4">More Details</Button>
+                </div>
+                <Button className="mt-4 w-full lg:w-auto">More Details</Button>
             </div>
 
-            <form id="payment-form" onSubmit={handleSubmit} className="">
+            <form id="payment-form" onSubmit={handleSubmit} className="flex flex-col">
                 <h1 className="text-xl font-bold tracking-wider leading-10">Card Information</h1>
-                <PaymentElement id="payment-element" options={paymentElementOptions} className=""/>
+                <PaymentElement id="payment-element" options={paymentElementOptions} className="mb-4" />
 
-                <Label htmlFor="cash" className="font-light text-base mt-96">Donation Amount</Label>
-                <Input type="number" id="cash" value={cash} onChange={(e) => setCash(e.target.value)}/>
+                <Label htmlFor="cash" className="font-light text-base mt-4">Donation Amount</Label>
+                <Input type="number" id="cash" value={cash} onChange={(e) => setCash(e.target.value)} className="mb-4" />
 
-                <Label htmlFor="message" className="font-light text-base mt-96">Message</Label>
-                <Textarea placeholder="Type message here..." value={note} onChange={(e) => setNote(e.target.value)}/>
-                
+                <Label htmlFor="message" className="font-light text-base mt-4">Message</Label>
+                <Textarea placeholder="Type message here..." value={note} onChange={(e) => setNote(e.target.value)} className="mb-4" />
+
                 <div className="flex items-center space-x-2 my-2">
-                    <Switch id="isPublic" checked={isPrivate} onCheckedChange={setIsPrivate}/>
+                    <Switch id="isPublic" checked={isPrivate} onCheckedChange={setIsPrivate} />
                     <Label htmlFor="isPublic">Be anonymous?</Label>
-
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger type="button"><CiCircleInfo className="text-2xl"/></TooltipTrigger>
-                                <TooltipContent className="">
-                                    <p>Toggle this switch to make your donation private or public</p>
-                                </TooltipContent>
+                            <TooltipTrigger type="button">
+                                <CiCircleInfo className="text-2xl" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Toggle this switch to make your donation private or public</p>
+                            </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </div>
 
-                <Button disabled={isLoading || !stripe || !elements} id="submit" className="mt-4">
+                <Button disabled={isLoading || !stripe || !elements} id="submit" className="mt-4 w-full lg:w-auto">
                     <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner"></div> : `Donate now`}
+                        {isLoading ? <div className="spinner" id="spinner"></div> : `Donate now`}
                     </span>
                 </Button>
                 {/* Show any error or success messages */}
-                {message && <div id="payment-message text-sm">{message}</div>}
+                {message && <div id="payment-message" className="text-sm mt-2">{message}</div>}
             </form>
         </div>
     );

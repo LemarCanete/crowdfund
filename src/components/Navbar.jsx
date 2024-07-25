@@ -36,89 +36,98 @@ const Navbar = () => {
     const router = useRouter();
     const pathname = usePathname();
     const {currentUser} = useContext(AuthContext)
+    const [isOpen, setIsOpen] = useState(false); // Added state for mobile menu toggle
 
-    if(pathname === '/') return false
+    if (pathname === '/') return false;
+
+    const handleLinkClick = (href) => {
+        router.push(href);
+        setIsOpen(false);
+    };
 
     return (
-        <nav className='flex justify-between p-5'>
-            <Link href="/" className=""><Image src="/logov5.png" alt="logo" width={155} height={155} priority/></Link>
+        <nav className='flex justify-between items-center p-5 bg-white shadow-md'>
+            <Link href="/" className="flex-shrink-0">
+                <Image src="/logov5.png" alt="logo" width={155} height={0} />
+            </Link>
 
-            <div className="flex gap-10 items-center">
-            <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage'>Home</Link>
-            <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects'>Projects</Link>
-            <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact'>Contact Us</Link>
-            <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About'>About</Link>
-                {!currentUser.uid && <div className="gap-2 flex">
-                    <Button variant="link" onClick={()=> router.push('/Login')}>Login</Button>
-                    <Button variant="" onClick={()=> router.push('/SignUp')}>Sign up</Button>
-                </div>}
-              
+            <div className="flex items-center">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="md:hidden text-gray-800 focus:outline-none"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        {isOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        )}
+                    </svg>
+                </button>
 
-                {currentUser.uid && <div className=''>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild className='cursor-pointer'>
-                            <Avatar>
-                                <AvatarImage src={`${currentUser?.photoURL}`} alt="@shadcn" />
-                                <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
-                            </Avatar>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                            <Link href="/Profile">
-                                <DropdownMenuItem >
-                                    <FaRegUser className="me-2 text-gray-500"/> Profile
-                                </DropdownMenuItem>
-                            </Link>
-                            <Link href="/Settings">
-                                <DropdownMenuItem>
-                                    <GoGear className="me-2 text-gray-500"/> Settings
-                                </DropdownMenuItem>
-                            </Link>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                                <Link href="/MyProjects">
-                                    <DropdownMenuItem>
-                                        <GoProject className="me-2 text-gray-500" /> My Projects
+                <div className={`fixed inset-0 bg-white z-50 flex flex-col items-center justify-center gap-10 md:flex-row md:static md:bg-transparent md:gap-10 md:flex ${isOpen ? 'flex' : 'hidden'}`}>
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="absolute top-4 right-4 text-gray-800 md:hidden"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <Link className={pathname === '/HomePage' ? 'text-blue-500' : ''} href='/HomePage' onClick={() => handleLinkClick('/HomePage')}>Home</Link>
+                    <Link className={pathname === '/Projects' ? 'text-blue-500' : ''} href='/Projects' onClick={() => handleLinkClick('/Projects')}>Projects</Link>
+                    <Link className={pathname === '/Contact' ? 'text-blue-500' : ''} href='/Contact' onClick={() => handleLinkClick('/Contact')}>Contact Us</Link>
+                    <Link className={pathname === '/About' ? 'text-blue-500' : ''} href='/About' onClick={() => handleLinkClick('/About')}>About</Link>
+                    {!currentUser?.uid && (
+                        <div className="flex gap-2">
+                            <Button variant="link" onClick={() => { router.push('/Login'); setIsOpen(false); }}>Login</Button>
+                            <Button variant="" onClick={() => { router.push('/SignUp'); setIsOpen(false); }}>Sign up</Button>
+                        </div>
+                    )}
+                    {currentUser?.uid && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Avatar>
+                                    <AvatarImage src={`${currentUser?.photoURL}`} alt="@shadcn" />
+                                    <AvatarFallback>{currentUser.email.slice(0, 2)}</AvatarFallback>
+                                </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56">
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem onClick={() => handleLinkClick('/Profile')}>
+                                        <FaRegUser className="mr-2 text-gray-500" /> Profile
                                     </DropdownMenuItem>
-                                </Link>
-                                <Link href="Bookmark">
-                                    <DropdownMenuItem >
-                                        <FaBookmark className="me-2 text-gray-500" /> Bookmark
+                                    <DropdownMenuItem onClick={() => handleLinkClick('/Settings')}>
+                                        <GoGear className="mr-2 text-gray-500" /> Settings
                                     </DropdownMenuItem>
-                                </Link>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
-                            <Link href="Social">
-                                <DropdownMenuItem >
-                                    <FaLink className="me-2 text-gray-500" /> Socials
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem onClick={() => handleLinkClick('/MyProjects')}>
+                                        <GoProject className="mr-2 text-gray-500" /> My Projects
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleLinkClick('/Bookmark')}>
+                                        <FaBookmark className="mr-2 text-gray-500" /> Bookmark
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem><FaLink className="mr-2 text-gray-500" /> Socials</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleLinkClick('/Donations')}>
+                                    <FaHandHoldingHeart className="mr-2 text-gray-500" /> Donations
                                 </DropdownMenuItem>
-                            </Link>
-                            
-                            <Link href="/Donations">
-                                <DropdownMenuItem >
-                                    <FaHandHoldingHeart className="me-2 text-gray-500"/> Donations
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => { signOut(auth); setIsOpen(false); }}>
+                                    <MdOutlineLogout className="mr-2 text-gray-500" /> Log out
                                 </DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={()=>signOut(auth)}>
-                                <MdOutlineLogout className="me-2 text-gray-500"/> Log out
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
+                            </DropdownMenuContent>
                         </DropdownMenu>
-                </div>}
-
+                    )}
+                </div>
             </div>
-
-            
-
-            
         </nav>
-    )
+    );
 }
 
-
-
-export default Navbar
+export default Navbar;
