@@ -58,7 +58,7 @@ const ContactUsPage = () => {
             {/* Left Section - Image */}
             <div className="flex-1 mb-10 lg:mb-0 lg:mr-10">
                 <img 
-                    src="/contactUS.png"
+                    src="/ContactUs.png"
                     alt="Contact Us" 
                     className="w-full h-auto rounded-lg"
                 />
