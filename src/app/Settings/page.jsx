@@ -71,7 +71,7 @@ const Page = () => {
                 displayName: name
             })
 
-            if(file.name){
+            if(file && file.name){
                 handleUploadFile()
             }
 
