@@ -43,6 +43,8 @@ import { AuthContext } from '@/context/AuthContext';
 import { useToast } from "@/components/ui/use-toast"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Separator } from '@/components/ui/separator';
+import { ToastAction } from "@/components/ui/toast"
+import Link from 'next/link';
 
 const Project = ({projectDetails}) => {
     const router = useRouter();
@@ -67,21 +69,29 @@ const Project = ({projectDetails}) => {
     }, [projectDetails])
 
     const addBookmark = async() =>{
-        const docRef = await addDoc(collection(db, "bookmarks"), {
-            coverPhoto: projectDetails.coverPhoto,
-            description: projectDetails.description,
-            projectId: projectDetails.uid,
-            title: projectDetails.title,
-            userId: currentUser.uid
-        });
-
-        setIsBookmark(true)
-        setTempBookmarkId(docRef.id)
-
-        toast({
-            title: "Boomarked Successfully",
-            description: "Project is now added to your bookmark",
-        })
+        try{
+            const docRef = await addDoc(collection(db, "bookmarks"), {
+                coverPhoto: projectDetails.coverPhoto,
+                description: projectDetails.description,
+                projectId: projectDetails.uid,
+                title: projectDetails.title,
+                userId: currentUser.uid
+            });
+    
+            setIsBookmark(true)
+            setTempBookmarkId(docRef.id)
+    
+            toast({
+                title: "Boomarked Successfully",
+                description: "Project is now added to your bookmark",
+            })
+        }catch(err){
+            toast({
+                title: "You are currently not logged in!",
+                description: "Pls login first",
+                action: <ToastAction altText="Pls login" ><Link href="/Login">Login</Link></ToastAction>,
+            })
+        }
     }
 
     const removeBookmark = async()  =>{

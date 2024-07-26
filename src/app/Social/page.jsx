@@ -25,6 +25,12 @@ const SocialPage = () => {
     });
 
     useEffect(() => {
+        if (!currentUser.uid && !currentUser) {
+            router.push('/');
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
         const fetchSocialLinks = async () => {
             if (currentUser) {
                 try {
@@ -165,8 +171,8 @@ const SocialPage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f0f0' }}>
-            <div style={{ width: '300px', backgroundColor: '#fff', padding: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+        <div className="md:flex block" style={{minHeight: '100vh', fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f0f0' }}>
+            <div className='w-full md:w-[300px]' style={{ backgroundColor: '#fff', padding: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <h2 style={{ textAlign: 'center', fontSize: '24px', marginBottom: '30px' }}>Link Your Account</h2>
                 {Object.keys(socialLinks).map((key) => (
                     <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -207,7 +213,7 @@ const SocialPage = () => {
                     <button onClick={handleSubmit} style={{ padding: '10px 20px', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>Submit</button>
                 </div>
             </div>
-            <div style={{ flex: 1, position: 'relative', padding: '40px', backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: 'url(/PhonePhoto.jpg)' }}>
+            <div className="" style={{ flex: 1, position: 'relative', padding: '40px', backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: 'url(/PhonePhoto.jpg)' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', position: 'relative', zIndex: 1 }}>
                     {Object.keys(socialLinks).map((key, index) => (
                         <div

@@ -27,7 +27,7 @@ const Page = () => {
     const {currentUser} = useContext(AuthContext)
 
     useEffect(()=>{
-        currentUser.uid && currentUser && router.push('/')
+        currentUser.uid && currentUser && router.push('/HomePage')
       }, [currentUser])
 
     const signIn = (email, password) =>{
@@ -41,7 +41,7 @@ const Page = () => {
                     title: "Successfully Loggedin",
                     description: "Welcome user",
                 })
-                router.push('/')
+                router.push('/HomePage')
                 return true
             })
             .catch((error) => {
@@ -96,7 +96,7 @@ const Page = () => {
                 title: "Successfully Loggedin",
                 description: "Welcome user",
             })
-            router.push('/')
+            router.push('/HomePage')
           }).catch((error) => {
                 console.log(error.message)
                 toast({

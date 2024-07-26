@@ -288,8 +288,8 @@ const Updates = ({projectDetails}) => {
                         </Card>
                     )
                 })}
-                {updates.length < 1 && <p className='text-slate-200 italic text-center text-3xl'>No projects updates yet for this project</p>}
             </div>
+            {updates.length < 1 && <p className='text-slate-200 italic text-center text-3xl'>No projects updates yet for this project</p>}
         </div>
     )
 }
