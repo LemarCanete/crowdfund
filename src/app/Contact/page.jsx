@@ -64,6 +64,7 @@ const ContactUsPage = () => {
                 />
             </div>
             
+            
             {/* Right Section - Contact Form and Information */}
             <div className="flex-1 lg:pl-10">
                 <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
