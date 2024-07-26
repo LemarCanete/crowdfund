@@ -81,7 +81,7 @@ export default function Home() {
                     <div className="p-6 bg-white rounded shadow-md"> 
                         <img src="/member6.jpg" alt="Team Member 6" className="w-32 h-32 mx-auto rounded-full mb-4"/>
                         <h3 className="text-xl font-bold">Jhon Mart Manigos</h3>
-                        <p className="mt-2">Frontend Developer</p>
+                        <p className="mt-2">Asst. Frontend Developer</p>
                     </div>
                 </div>
                 <h3 className="text-2xl font-bold mt-8">Team Bangan</h3>
