@@ -113,7 +113,7 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
         layout: "tabs",
     };
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-8">
 
             <div className="bg-white p-4 rounded shadow-md">
                 <img src={projectDetails.coverPhoto} alt={projectDetails.title} className="w-full h-48 object-cover rounded mb-4" />
@@ -127,7 +127,7 @@ export default function CheckoutForm({cash, setCash, addDonate, projectDetails, 
                 <Button className="mt-4 w-full lg:w-auto">More Details</Button>
             </div>
 
-            <form id="payment-form" onSubmit={handleSubmit} className="flex flex-col">
+            <form id="payment-form" onSubmit={handleSubmit} className="flex flex-col mx-2">
                 <h1 className="text-xl font-bold tracking-wider leading-10">Card Information</h1>
                 <PaymentElement id="payment-element" options={paymentElementOptions} className="mb-4" />
 

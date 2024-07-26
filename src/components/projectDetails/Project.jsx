@@ -110,7 +110,7 @@ const Project = ({projectDetails}) => {
                         </div>
 
                         {/* details */}
-                        <div className="m-2">
+                        <div className="mx-2 mt-6 sm:mt-2">
                             {/* header */}
                             <div className="grid grid-cols-2">
                                 <div className="flex gap-4">

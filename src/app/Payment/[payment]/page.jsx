@@ -110,7 +110,7 @@ export default function Page({params}) {
     return (
         <div className="w-screen">
             {clientSecret && (
-                <div className="w-4/6 mx-auto">
+                <div className="w-full md:w-4/6 mx-auto">
                     <Elements options={options} stripe={stripePromise}>
                         <Button variant="link" className="flex gap-4 items-center cursor-pointer" onClick={()=>router.back()} ><IoMdArrowBack /> Back</Button>
                         {projectDetails && <CheckoutForm cash={cash} setCash={setCash} note={note} setNote={setNote} setIsPrivate={setIsPrivate} isPrivate={isPrivate} addDonate={addDonate} projectDetails={projectDetails}/>}

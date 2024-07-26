@@ -27,7 +27,7 @@ const Page = () => {
     const {currentUser} = useContext(AuthContext)
 
     useEffect(()=>{
-        currentUser.uid && router.push('/')
+        currentUser.uid && currentUser && router.push('/')
       }, [currentUser])
 
     const signIn = (email, password) =>{
@@ -135,7 +135,7 @@ const Page = () => {
                     isSubmitting,
                     /* and other goodies */
                 }) => (
-                    <form onSubmit={handleSubmit} className='w-2/6 mx-auto mt-16'>
+                    <form onSubmit={handleSubmit} className='mx-4 lg:w-2/6 lg:mx-auto mt-16'>
                         <h1 className="text-2xl font-bold">Login</h1>
                         <div className="my-6">
                             <Label htmlFor="email" className=''>Email</Label>

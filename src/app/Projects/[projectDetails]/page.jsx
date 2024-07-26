@@ -62,7 +62,7 @@ const Page = ({params}) => {
                 <Button className={`${tabSelected === 4 && 'underline'}`} variant="ghost" onClick={() => setTabSelected(4)}>Settings</Button>
             </div>}
 
-            {projectDetails.uid && <RenderTabSelected />}
+            {currentUser && projectDetails.uid && <RenderTabSelected />}
         </div>
     )
 }
