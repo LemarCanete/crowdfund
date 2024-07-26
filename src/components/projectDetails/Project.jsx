@@ -210,7 +210,7 @@ const Project = ({ projectDetails }) => {
                         <TabsTrigger value="updates">Updates</TabsTrigger>
                         <TabsTrigger value="backerList">Backer List</TabsTrigger>
                         <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                        <TabsTrigger value="aboutTheAuthor">About the author</TabsTrigger>
+                        <TabsTrigger value="aboutTheAuthor">Author bio</TabsTrigger>
                     </TabsList>
                     {/* <TabsContent value="about">
                         <h1 className="text-xl">About</h1>
@@ -218,7 +218,7 @@ const Project = ({ projectDetails }) => {
                     </TabsContent> */}
                     <TabsContent value="updates"><Updates projectDetails={projectDetails} /></TabsContent>
                     <TabsContent value="backerList"><BackerList projectDetails={projectDetails} /></TabsContent>
-                    <TabsContent value="reviews"><ReviewForm projectDetails={projectDetails} /></TabsContent>
+                    <TabsContent value="reviews"><ReviewForm projectDetails={projectDetails} projectId={projectDetails.uid}/></TabsContent>
                     <TabsContent value="aboutTheAuthor"><AboutTheAuthor projectDetails={projectDetails} /></TabsContent>
                 </Tabs>
                 <div className="lg:col-span-2">
