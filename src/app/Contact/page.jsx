@@ -25,7 +25,7 @@ const ContactUsPage = () => {
                 name,
                 email,
                 subject,
-                message
+                message: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`
             });
             console.log("Email sent successfully", emailResult.status, emailResult.text);
         } catch (error) {
@@ -43,7 +43,7 @@ const ContactUsPage = () => {
                 timestamp: new Date()
             });
             console.log("Document written with ID: ", docRef.id);
-            // Optionally reset the form or show a success message
+           
             alert('Message sent successfully!');
             setName('');
             setEmail('');
